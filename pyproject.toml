@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fa-models"
-version = "1.0.1"
+version = "1.0.2"
 description = "These are a set of models often used for trading services."
 readme = "README.md"
 authors = [{ name = "Brayan Svan", email = "brayan@freyaalpha.com" }]

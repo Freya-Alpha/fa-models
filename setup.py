@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 setup(
     name='fa-models',
-    packages=find_packages(include=['lib']),
+    packages=find_packages(include=['models']),
     version='0.1.0',
     description='The library describes the most common models used in trading systems.',
     author='Brayan Svan',

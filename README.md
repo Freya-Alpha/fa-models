@@ -40,6 +40,8 @@ Install the tools build and twine: python -m pip install build twine`
 
 Delete any old files in the /dist folder.
 
+Bump the version in pyproject.toml.
+
 Build the project: `python -m build`
 
 Check the distribution: `twine check dist/*`
