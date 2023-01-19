@@ -5,8 +5,16 @@ from sqlmodel import Field, SQLModel
 from models.direction import Direction
 from models.side import Side
 
+class BaseSignalSQLModel(SQLModel):
+    def __init__(self, **kwargs):
+        self.__config__.table = False
+        super().__init__(**kwargs)
+        self.__config__.table = True
 
-class Signal(SQLModel, table=False):
+    class Config:
+        validate_assignment = True
+
+class Signal(SQLModel, table=True):
     """A signal represents a signal from a algorithm and supplier. It must have a correlating id to a trade."""
     id: Optional[int] = Field(default=None, primary_key=True)
     market: str    
