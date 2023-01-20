@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fa-models"
-version = "1.0.2"
+version = "1.0.3"
 description = "These are a set of models often used for trading services."
 readme = "README.md"
 authors = [{ name = "Brayan Svan", email = "brayan@freyaalpha.com" }]
@@ -17,9 +17,8 @@ classifiers = [
 ]
 keywords = ["finance", "trading", "models"]
 dependencies = [
-    "sqlmodel"
-    #,
-    #'tomli; python_version < "3.11"',
+    "sqlmodel",
+    'tomli; python_version < "3.11"',
 ]
 requires-python = ">=3.9"
 
@@ -28,3 +27,28 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 
 [project.urls]
 Homepage = "https://github.com/svabra/fa-models/settings"
+
+#[project.scripts]
+#realpython = "reader.__main__:main"
+
+[tool.bumpver]
+current_version = "2023.1001-alpha"
+version_pattern = "YYYY.BUILD[-TAG]"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+]
+"setup.py" = [
+    "{version}",
+    "{pep440_version}",
+]
+"README.md" = [
+    "{version}",
+    "{pep440_version}",
+]
+
