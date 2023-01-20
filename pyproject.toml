@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fa-models"
 version = "1.0.11"
-description = "These are a set of models often used for trading services."
+description = "The library describes the most common models used in trading systems."
 readme = "README.md"
 authors = [{ name = "Brayan Svan", email = "brayan@freyaalpha.com" }]
 #license = { file = "LICENSE" }
