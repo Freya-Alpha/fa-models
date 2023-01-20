@@ -28,15 +28,6 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 [project.urls]
 Homepage = "https://github.com/svabra/fa-models/settings"
 
-#[tool.setuptools]
-#packages = ["famodels"]
-#package-dir = {"" = "src"}
-
-#[tool.setuptools.packages.find]
-#where = ["src"]  # ["."] by default
-#exclude = ["tests*"]  # empty by default
-#namespaces = true  # true by default
-
 [tool.bumpver]
 current_version = "1.0.15"
 version_pattern = "MAJOR.MINOR.PATCH"
