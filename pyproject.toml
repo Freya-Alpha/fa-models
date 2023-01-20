@@ -43,10 +43,10 @@ push = true
 "pyproject.toml" = [
     'current_version = "{version}"',
 ]
-#"setup.py" = [
-#    "{version}",
-#    "{pep440_version}",
-#]
+"setup.py" = [
+    "{version}",
+    "{pep440_version}",
+]
 #"README.md" = [
 #    "{version}",
 #    "{pep440_version}",

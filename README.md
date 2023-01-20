@@ -4,8 +4,6 @@ A set of models often used for trading services. The library offers no algorithm
 ## General
 Run and compiled for Python 3.9.13.
 
-Version # [![version]]
-
 ## Development
 
 
