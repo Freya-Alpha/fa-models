@@ -36,11 +36,11 @@ In order to use your own version of the project - to maybe contribute to the lib
 
 ### Releasing a new version
 
-Install the tools build and twine: python -m pip install build twine`
+Install the tools build and twine: `python -m pip install build twine`
 
 Delete any old files in the /dist folder.
 
-Bump the version in pyproject.toml.
+Bump the version in pyproject.toml: `bumpver update --patch`
 
 Build the project: `python -m build`
 
