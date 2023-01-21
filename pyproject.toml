@@ -5,7 +5,7 @@ requires      = ["setuptools>=66.1.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "famodels"
+name = "fa-models"
 version = "1.0.20"
 description = "The library describes the most common models used in trading systems."
 readme = "README.md"

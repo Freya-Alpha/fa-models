@@ -9,9 +9,10 @@ Run and compiled for Python 3.9.13.
 
 ### Installation as Consuming Developer
 
-Simply run:
+Simply run: `pip install fa-models`
 
-`pip install fa-models`
+Import in modules without the dash (e.g.): `from famodels.signal import Signal`
+
 
 ### Setup as Contributor
 Create the virtul environment: `py -m venv .venv`
