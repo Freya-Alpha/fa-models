@@ -57,3 +57,5 @@ If the test-upload was successful, finally, upload to pypi production: `twine up
 
 Done.
 
+(P.S. Do not forget to update the library in your projects: `pip install --upgrade fa-models`)
+
