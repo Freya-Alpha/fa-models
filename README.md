@@ -1,5 +1,5 @@
 # fa-models
-A set of models often used for trading services. The library offers no algorithms - just models.
+A set of models often used for trading services. The library offers merely models, tests and data generators. 
 
 ## General
 Run and compiled for Python 3.9.13.
@@ -28,7 +28,7 @@ To cleanup the environment run:
 or `pip3 install pip-autoremove`
 
 ### Build Library
-Preqrequisite: make sure that you give your Operating System user the right to modify files in the python directory. The directory where pyhton is installed.
+Prerequisite: make sure that you give your Operating System user the right to modify files in the python directory. The directory where pyhton is installed.
 Use `python setup.py bdist_wheel` to create the dist, build and .eggs folder.
 
 ## Reference from a different project
@@ -52,5 +52,7 @@ Upload to test-pypi to validate: `twine upload -r testpypi dist/*`
 
 Login with username: svabra (password should be known)
 
-Finally, upload to pypi production: `twine upload dist/*`
+If the test-upload was successful, finally, upload to pypi production: `twine upload dist/*`
+
+Done.
 
