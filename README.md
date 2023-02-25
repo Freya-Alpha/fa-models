@@ -37,10 +37,10 @@ In order to use your own version of the project - to maybe contribute to the lib
 
 ### Releasing a new version
 
+Delete any old files in the /dist folder.
+
 Install the tools build, twine and bumpver: `python -m pip install build twine bumpver`
 Upgrade the setuptools: `pip install --upgrade setuptools`
-
-Delete any old files in the /dist folder.
 
 Bump the version in pyproject.toml: `bumpver update --patch`
 
