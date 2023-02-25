@@ -35,6 +35,6 @@ class Generator:
             tp = random.uniform(price * 0.97, price * 0.8)
             sl = random.uniform(price * 1.03, price * 1.20)
             
-        return Signal(id=id, algo_id=algo_id, provider_id=provider_id, maerket=market, exchange=exchange, 
+        return Signal(id=id, algo_id=algo_id, provider_id=provider_id, market=market, exchange=exchange, 
                       trade_correlation_id=trade_correlation_id, direction=direction, side=side, price=price,
                        tp=tp, sl=sl)
