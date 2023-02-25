@@ -12,8 +12,8 @@ class BaseSignalSQLModel(SQLModel):
     class Config:
         validate_assignment = True
 
-class Signal(SQLModel, table=True):
-    """A signal represents a signal from a algorithm and supplier. It must have a correlating id to a trade."""
+class TradingSignal(SQLModel, table=True):
+    """A tradign signal represents a suggestion to buy or sell. It is issued by a signal supplier (manually or algorithmically). It must have a correlating id to a trade."""
     id: Optional[int] = Field(default=None, primary_key=True)
     algo_id: str
     """Provide the id of your algorithm entity (you might have more than one algorithm), which is sending this signal.  We have issued this id."""
