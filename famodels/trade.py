@@ -1,6 +1,6 @@
 from datetime import datetime
-from state_of_trade import StateOfTrade
-from direction import Direction
+from famodels.state_of_trade import StateOfTrade
+from famodels.direction import Direction
 from typing import Optional
 from sqlmodel import Field, SQLModel
 import uuid
