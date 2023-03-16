@@ -3,7 +3,7 @@ from famodels.side import Side
 from famodels.trading_signal import TradingSignal
 import uuid, random
 
-class Generator:
+class DataGenerator:
     
     def generate_batch_of_signals(self, number_of_signals:int=10):
         """ Generates a random block of signals. 
@@ -14,8 +14,8 @@ class Generator:
             signals.append(self.generate_random_signal())
         return signals
     
-    # This needs to be moved into the fa-model library
     def generate_random_signal(self, dir:Direction = Direction.LONG):
+        """Generates a single random signal."""
         id = str(uuid.uuid4())
         algo_id = str(uuid.uuid4())
         provider_id = str(uuid.uuid4())        

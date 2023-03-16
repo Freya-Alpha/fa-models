@@ -1,8 +1,8 @@
 import pytest
-from famodels.generator import Generator
+from data_generator import DataGenerator
 
 def test_generate_batch_of_signals():
-    gen = Generator()
+    gen = DataGenerator()
     try:
         gen.generate_batch_of_signals()
     except Exception as e:
