@@ -18,7 +18,7 @@ def test_create_json_avro_head(name, namespace):
     assert header == expected_header
 
 def test_create_json_schema_for_avro():
-    generated_avro_schema = SchemaGenerator().create_json_schema_for_avro(model_class=TradingSignal)
+    generated_avro_schema = SchemaGenerator().generate_json_schema_for_avro(model_class=TradingSignal)
 
     with open('./tests/avro_schema_expected.json', 'r') as f:
         # Load the JSON data from the file

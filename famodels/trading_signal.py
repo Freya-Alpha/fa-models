@@ -36,6 +36,6 @@ class TradingSignal(SQLModel, table=True):
     """An ISO-UTC-compatible date and time of when the signal was created by the signal supplier."""
     datetime_of_registration: Optional[str]
     """The ISO-UTC-compatible date and time of when the signal was entering our interface."""
-    position_size_of_investement: float = 100
+    position_size_of_investment: float = 100
     """Percentage of the investment position this algortihm is allowed to trade. Default is 100%, which is 1 position."""  
     
