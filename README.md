@@ -1,5 +1,10 @@
 # fa-models
-A set of models often used for trading services. The library offers merely models, tests and data generators. 
+A set of models often used for trading services. The library offers merely models, tests and data and schema generators. The Schemas Generator offers to translate the models to Avro Schemas written in JSON.
+
+## Sponsors
+Freya Alpha
+The Kára System
+Spark & Hale Robotic Industries
 
 ## General
 Run and compiled for Python 3.9.13.

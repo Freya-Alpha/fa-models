@@ -1,0 +1,77 @@
+{
+  "namespace": "fa.signal-processing.TradingSignal",
+  "type": "record",
+  "name": "TradingSignal",
+  "fields": [
+      {
+          "name": "id",
+          "type": "int"
+      },
+      {
+          "name": "algo_id",
+          "type": "string"
+      },
+      {
+          "name": "provider_id",
+          "type": "string"
+      },
+      {
+          "name": "market",
+          "type": "string"
+      },
+      {
+          "name": "exchange",
+          "type": "string"
+      },
+      {
+          "name": "trade_correlation_id",
+          "type": "string"
+      },
+      {
+          "name": "direction",
+          "type": {
+              "type": "enum",
+              "name": "Direction",
+              "symbols": [
+                  "long",
+                  "short"
+              ]
+          }
+      },
+      {
+          "name": "side",
+          "type": {
+              "type": "enum",
+              "name": "Side",
+              "symbols": [
+                  "buy",
+                  "sell"
+              ]
+          }
+      },
+      {
+          "name": "price",
+          "type": "float"
+      },
+      {
+          "name": "tp",
+          "type": "float"
+      },
+      {
+          "name": "sl",
+          "type": "float"
+      },
+      {
+          "name": "datetime_of_creation",
+          "type": "string"
+      },
+      {
+          "name": "datetime_of_registration",
+          "type": "string"
+      },
+      {
+          "name": "position_size_of_investement",
+          "type": "float"
+      }
+  ]
+}

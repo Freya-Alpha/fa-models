@@ -1,4 +1,7 @@
+import datetime
+from enum import Enum
 from typing import Optional
+from uuid import UUID
 from sqlmodel import Field, SQLModel
 from famodels.direction import Direction
 from famodels.side import Side
@@ -36,23 +39,3 @@ class TradingSignal(SQLModel, table=True):
     position_size_of_investement: float = 100
     """Percentage of the investment position this algortihm is allowed to trade. Default is 100%, which is 1 position."""  
     
-    __avro_type__ = {
-        "type": "record",
-        "name": "TradingSignal",
-        "fields": [
-            {"name": "id", "type": "int"},
-            {"name": "algo_id", "type": "string"},
-            {"name": "provider_id", "type": "string"},
-            {"name": "market", "type": "string"},
-            {"name": "exchange", "type": "string"},
-            {"name": "trade_correlation_id", "type": "string"},
-            {"name": "direction", "type": {"type": "enum", "name": "Direction", "symbols": ["long", "short"]}},
-            {"name": "side", "type": {"type": "enum", "name": "Side", "symbols": ["buy", "sell"]}},
-            {"name": "price", "type": "float"},
-            {"name": "tp", "type": ["null", "float"]},
-            {"name": "sl", "type": ["null", "float"]},
-            {"name": "datetime_of_creation", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-            {"name": "datetime_of_registration", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-            {"name": "position_size_of_investement", "type": "float", "default": 100}
-        ]
-    }

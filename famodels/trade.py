@@ -5,14 +5,6 @@ from typing import Optional
 from sqlmodel import Field, SQLModel
 import uuid
 
-###### JSON TO CLASS MAPPING EXAMPLE
-# external_data = {
-#     'id': '123',
-#     'signup_ts': '2019-06-01 12:22',
-#     'friends': [1, 2, '3'],
-# }
-# user = User(**external_data)
-
 class BaseTradeSQLModel(SQLModel):
     def __init__(self, **kwargs):
         self.__config__.table = False
