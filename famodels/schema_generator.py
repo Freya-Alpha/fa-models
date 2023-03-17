@@ -12,7 +12,7 @@ class SchemaGenerator:
     def generate_json_schema_for_avro(self, model_class: type[SQLModel]):
         """Accepts a class based on SQLModel and converts it to an avro schema in json."""
         # create the avro schema head (in json).         
-        head = self.create_json_avro_head("fa.signal-processing.", model_class.__name__)
+        head = self.create_json_avro_head("fa.signal-processing", model_class.__name__)
         # now attach the fields.
         head["fields"] = self.create_field_array(model_class=model_class)
         # append fields to the head.
