@@ -2,6 +2,9 @@
 from enum import EnumMeta
 from typing import List, Dict, Union, Tuple, Optional, get_args
 from sqlmodel import SQLModel
+from typing import TypeVar, Type
+
+T = TypeVar('T')
 
 class SchemaGenerator:
     """Creates schemas from python class to json class schemas to avro schemas in 
@@ -9,26 +12,41 @@ class SchemaGenerator:
     def __init__(self):
         pass
 
-    def generate_json_schema_for_avro(self, model_class: type[SQLModel]):
-        """Accepts a class based on SQLModel and converts it to an avro schema in json."""
-        # create the avro schema head (in json).         
-        head = self.create_json_avro_head("fa.signal-processing", model_class.__name__)
+    def generate_json_schema_for_avro(self, model_class: Type[T], namespace:str=None) -> Dict:
+        """Accepts a class based on SQLModel and converts it to an avro schema in json.
+        Args:
+            model_class (type[SQLModel]): The SQLModel you would like to translate into json definition
+            of an avro schema.
+            namespace (str, optional): Make sure the passed namespace is what your sink system requires. 
+            e.g. targeting a pulsar topic, the namespace must be <tenant>.<namespace> which does imply 
+            you are sending data to pulsar://<tenant>/<namespace>/<topic>. Same applies in a similar
+            way to Kafka, Hadoop, Flink, etc.
+
+        Returns:
+            dict: Return the json schema definition of the avro.
+        """
+        # create the avro schema head (in json).    
+        if namespace == None:
+            mod_namespace = "public"  
+        else:
+            mod_namespace = namespace
+
+        schema = self.create_json_avro_head(mod_namespace, model_class.__name__)
         # now attach the fields.
-        head["fields"] = self.create_field_array(model_class=model_class)
+        schema["fields"] = self.create_field_array(model_class=model_class)
         # append fields to the head.
 
-        return head
+        return schema
 
-    def create_json_avro_head(self, namespace:str, name: str):
+    def create_json_avro_head(self, namespace:str, name: str) -> Dict:
         """Returning the head of json schema for avro."""
         return {
             "namespace": namespace,
             "type": "record",
             "name": name,
-            #"fields": [],
         }
 
-    def create_field_array(self, model_class: type[SQLModel]) -> Dict:
+    def create_field_array(self, model_class: Type[T]) -> Dict:
         fields = []
         for field in model_class.__fields__.values():
             if issubclass(field.type_, SQLModel):
@@ -74,5 +92,4 @@ class SchemaGenerator:
             else:
                 raise ValueError(f"Unsupported data type: {field.type_}")
 
-        #return {"type": "record", "name": model_class.__name__, "fields": fields}
         return fields

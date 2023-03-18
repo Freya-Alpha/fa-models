@@ -11,13 +11,14 @@ Run and compiled for Python 3.9.13.
 
 ## Development
 
+### Testing
+run tests with `pytest -s -vv` to see all the details.
 
 ### Installation as Consuming Developer
 
 Simply run: `pip install fa-models`
 
 Import in modules without the dash (e.g.): `from famodels.signal import Signal`
-
 
 ### Setup as Contributor
 Create the virtul environment: `py -m venv .venv`
