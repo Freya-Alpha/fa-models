@@ -1,11 +1,10 @@
-
 import pytest
-from famodels.schema_generator import SchemaGenerator
-from famodels.trading_signal import TradingSignal
+from famodels.generators.schema_generator import SchemaGenerator
+from famodels.models.trading_signal import TradingSignal
 import json
 
 @pytest.mark.parametrize("name, namespace", [
-    ("TradingSignal", "fa.signal-processing"),
+    ("TradingSignal", "fa.signalprocessing"),
     #("TradingSignal", "tks.signal-processing.TradingSignal")
 ])
 def test_create_json_avro_head(name, namespace):

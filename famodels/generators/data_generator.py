@@ -1,6 +1,6 @@
-from famodels.direction import Direction
-from famodels.side import Side
-from famodels.trading_signal import TradingSignal
+from famodels.models.direction import Direction
+from famodels.models.side import Side
+from famodels.models.trading_signal import TradingSignal
 import uuid, random
 
 class DataGenerator:

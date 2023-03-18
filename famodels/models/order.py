@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import List, Set, Optional
-from famodels.state_of_trade import StateOfTrade
-from famodels.direction import Direction
-from famodels.order_type import OrderType
-from famodels.side import Side
+from famodels.models.state_of_trade import StateOfTrade
+from famodels.models.direction import Direction
+from famodels.models.order_type import OrderType
+from famodels.models.side import Side
 from typing import Optional
 from sqlmodel import Field, SQLModel
 

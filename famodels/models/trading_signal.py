@@ -3,8 +3,8 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 from sqlmodel import Field, SQLModel
-from famodels.direction import Direction
-from famodels.side import Side
+from famodels.models.direction import Direction
+from famodels.models.side import Side
 
 class BaseSignalSQLModel(SQLModel):
     def __init__(self, **kwargs):

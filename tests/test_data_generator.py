@@ -1,5 +1,5 @@
 import pytest
-from famodels.data_generator import DataGenerator
+from famodels.generators.data_generator import DataGenerator
 
 def test_generate_batch_of_signals():
     gen = DataGenerator()
