@@ -1,6 +1,7 @@
 
-from enum import EnumMeta
+from enum import Enum, EnumMeta
 from typing import List, Dict, Union, Tuple, Optional, get_args
+import typing
 from sqlmodel import SQLModel
 from typing import TypeVar, Type
 
@@ -12,7 +13,7 @@ class SchemaGenerator:
     def __init__(self):
         pass
 
-    def generate_json_schema_for_avro(self, model_class: Type[T], namespace:str=None) -> Dict:
+    def generate_json_schema_for_avro(self, model: typing.Type, namespace:str=None) -> Dict:
         """Accepts a class based on SQLModel and converts it to an avro schema in json.
         Args:
             model_class (type[SQLModel]): The SQLModel you would like to translate into json definition
@@ -25,18 +26,8 @@ class SchemaGenerator:
         Returns:
             dict: Return the json schema definition of the avro.
         """
-        # create the avro schema head (in json).    
-        if namespace == None:
-            mod_namespace = "public"  
-        else:
-            mod_namespace = namespace
 
-        schema = self.create_json_avro_head(mod_namespace, model_class.__name__)
-        # now attach the fields.
-        schema["fields"] = self.create_field_array(model_class=model_class)
-        # append fields to the head.
-
-        return schema
+        return self.generate_avro_schema(namespace, model)
 
     def create_json_avro_head(self, namespace:str, name: str) -> Dict:
         """Returning the head of json schema for avro."""
@@ -46,50 +37,141 @@ class SchemaGenerator:
             "name": name,
         }
 
-    def create_field_array(self, model_class: Type[T]) -> Dict:
+    # def create_field_array(self, model: typing.Type) -> Dict:
+    def generate_avro_schema(self, namespace:str , model_class: typing.Type) -> dict:
         fields = []
-        for field in model_class.__fields__.values():
-            if issubclass(field.type_, SQLModel):
-                # Recursively generate schema for nested models
-                fields.append({"name": field.name, "type": self.create_field_array(self, field.type_)})
-            elif field.type_ == str:
-                fields.append({"name": field.name, "type": "string"})
-            elif field.type_ == int:
-                fields.append({"name": field.name, "type": "int"})
-            elif field.type_ == float:
-                fields.append({"name": field.name, "type": "float"})
-            elif field.type_ == bool:
-                fields.append({"name": field.name, "type": "boolean"})
-            elif isinstance(field.type_, EnumMeta):
-                # Generate Avro schema for enums
-                symbols = [e.value for e in field.type_]
-                enum_schema = {"type": "enum", "name": field.type_.__name__, "symbols": symbols}
-                fields.append({"name": field.name, "type": enum_schema})
-            elif issubclass(field.type_, list):
-                # Generate Avro schema for arrays
-                item_schema = self.create_field_array(get_args(field.type_)[0])
-                array_schema = {"type": "array", "items": item_schema}
-                fields.append({"name": field.name, "type": array_schema})
-            elif issubclass(field.type_, dict):
-                # Generate Avro schema for maps
-                value_schema = self.create_field_array(get_args(field.type_)[1])
-                map_schema = {"type": "map", "values": value_schema}
-                fields.append({"name": field.name, "type": map_schema})
-            elif issubclass(field.type_, tuple):
-                # Generate Avro schema for unions
-                union_types = []
-                for t in get_args(field.type_):
-                    if t == type(None):
-                        union_types.append("null")
-                    else:
-                        union_types.append(self.create_field_array(t))
-                union_schema = union_types if len(union_types) > 1 else union_types[0]
-                fields.append({"name": field.name, "type": union_schema})
-            # elif isinstance(field.type_, schema.Fixed):
-            #     # Generate Avro schema for fixed types
-            #     fixed_schema = {"type": "fixed", "name": field.type_.__name__, "size": field.type_.__args__[0]}
-            #     fields.append({"name": field.name, "type": fixed_schema})
-            else:
-                raise ValueError(f"Unsupported data type: {field.type_}")
+        for name, python_type in model_class.__annotations__.items():
+            origin = typing.get_origin(python_type)
+            print(f"PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+            if origin is not None:
+                
+                if issubclass(origin, List):
+                    print(f"IS LIST --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    item_type = typing.get_args(python_type)[0]
 
-        return fields
+                    if issubclass(item_type, Enum):
+                        fields.append({
+                            "name": name,
+                            "type": {
+                                "type": "array",
+                                "items": {
+                                    "type": "enum",
+                                    "name": item_type.__name__,
+                                    "symbols": [e.value for e in item_type]
+                                }
+                            }
+                        })
+                    else:
+                        fields.append({
+                            "name": name,
+                            "type": {
+                                "type": "array",
+                                "items": {"type": self.get_avro_type(item_type)}
+                            }
+                        })
+                elif issubclass(origin, Dict):
+                    print(f"IS DICT --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    value_type = typing.get_args(python_type)[1]
+                    if issubclass(value_type, Enum):
+                        fields.append({
+                            "name": name,
+                            "type": {
+                                "type": "map",
+                                "values": {
+                                    "type": "enum",
+                                    "name": value_type.__name__,
+                                    "symbols": [e.value for e in value_type]
+                                }
+                            }
+                        })
+                    else:
+                        fields.append({
+                            "name": name,
+                            "type": {
+                                "type": "map",
+                                "values": {"type": self.get_avro_type(value_type)}
+                            }
+                        })
+                else:
+                    print(f"HAS ORIGIN BUT ELSE --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    if python_type.__class__.__name__ == "EnumMeta":
+                        print()
+                        fields.append({
+                            "name": name,
+                            "type": {
+                                "type": "array",
+                                "items": {
+                                    "type": "enum",
+                                    "name": python_type.__name__,
+                                    "symbols": [e.value for e in python_type]
+                                }
+                            }
+                        })
+
+                    else:
+                        fields.append({"name": name, "type": {"type": self.get_avro_type(python_type)}})
+            else:
+                print(f"NONE ORIGIN --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                if python_type.__class__.__name__ == "EnumMeta":
+                    print(f"NONE ORIGIN --> ENUM --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    fields.append({
+                        "name": name,
+                        "type": {
+                            "type": "array",
+                            "items": {
+                                "type": "enum",
+                                "name": python_type.__name__,
+                                "symbols": [e.value for e in python_type]
+                            }
+                        }
+                    })
+                else:
+                    fields.append({"name": name, "type": {"type": self.get_avro_type(python_type)}})
+
+        return {"namespace": namespace, "type": "record", "name": model_class.__name__, "fields": fields}
+
+
+    def get_avro_type(self, python_type: typing.Type) -> str:
+        print(f"TYPE: {python_type}")
+        print(f"ORIGIN: {typing.get_origin(python_type)}")
+
+        if python_type == str:
+            return "string"
+        elif python_type == int:
+            return "int"
+        elif python_type == float:
+            return "float"
+        elif python_type == bool:
+            return "boolean"
+        # elif python_type == typing.Any:
+        #     return "null"
+        elif isinstance(python_type, Enum):
+            print("YES, IT RECOGNIZES ENUM!!!")
+            raise Exception
+            return "enum"
+        elif python_type.__class__.__name__ == "EnumMeta":
+            return "enum"
+        elif typing.get_origin(python_type) == list:
+            return "array"
+        elif python_type == tuple:
+            return "array"
+        elif typing.get_origin(python_type) == tuple:
+            item_type = self.get_avro_type(typing.get_args(python_type)[0])
+            return {"type": "array", "items": item_type}
+        else:
+            
+            raise ValueError(f"Unsupported data type: {python_type}. \
+                             {python_type.__name__} \
+                             {python_type.__module__} \
+                             {python_type.__qualname__} \
+                             {python_type.__bases__} \
+                             {python_type.__class__} \
+                             {python_type.__class__.__name__} \
+                             {python_type.__instancecheck__} \
+                             {python_type.__subclasscheck__} \
+                             {typing.get_origin(python_type)} \
+                             ")
+
+
+
+

@@ -50,6 +50,7 @@ Install the tools build, twine and bumpver: `python -m pip install build twine b
 Upgrade the setuptools: `pip install --upgrade setuptools`
 
 Bump the version in pyproject.toml: `bumpver update --patch`
+This will commit a new version to GitHub.
 
 Build the project: `python -m build`
 

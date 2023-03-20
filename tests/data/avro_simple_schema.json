@@ -1,0 +1,57 @@
+{
+  "namespace": "fa.signalprocessing",
+  "type": "record",
+  "name": "SimpleClass",
+  "fields": [
+      {
+          "name": "nothing",
+          "type": {
+              "type": "string"
+          }
+      },
+      {
+          "name": "something",
+          "type": {
+              "type": "int"
+          }
+      },
+      {
+          "name": "a_lot",
+          "type": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              }
+          }
+      },
+      {
+          "name": "more",
+          "type": {
+              "type": {
+                  "type": "array",
+                  "items": "float"
+              }
+          }
+      },
+      {
+          "name": "less",
+          "type": {
+              "type": "array"
+          }
+      },
+      {
+          "name": "side",
+          "type": {
+              "type": "array",
+              "items": {
+                  "type": "enum",
+                  "name": "Side",
+                  "symbols": [
+                      "buy",
+                      "sell"
+                  ]
+              }
+          }
+      }
+  ]
+}
