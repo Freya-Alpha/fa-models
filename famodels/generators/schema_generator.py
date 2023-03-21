@@ -46,7 +46,7 @@ class SchemaGenerator:
             # print(f"\n\nPYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
 
             if origin is not None and origin is typing.Union:
-                print(f"NONE ORIGIN BUT OPTIONAL --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                # print(f"NONE ORIGIN BUT OPTIONAL --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                 # Field is optional, so add a new field definition for each possible type
                 # Not clear why not simply taking the first attribute.
                 # For now we limit it to the first one.
