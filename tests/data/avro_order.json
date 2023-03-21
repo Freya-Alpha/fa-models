@@ -1,0 +1,67 @@
+{
+    "namespace": "tks.signalprocessing",
+    "type": "record",
+    "name": "Order",
+    "fields": [
+        {
+            "name": "id",
+            "type": [
+                "null",
+                "int"
+            ],
+            "default": "null"
+        },
+        {
+            "name": "account",
+            "type": "string"
+        },
+        {
+            "name": "pos_idx",
+            "type": "int"
+        },
+        {
+            "name": "market",
+            "type": "string"
+        },
+        {
+            "name": "correlation_id",
+            "type": "float"
+        },
+        {
+            "name": "direction",
+            "type": "enum",
+            "symbols": [
+                "long",
+                "short"
+            ]
+        },
+        {
+            "name": "side",
+            "type": "enum",
+            "symbols": [
+                "buy",
+                "sell"
+            ]
+        },
+        {
+            "name": "price",
+            "type": "float"
+        },
+        {
+            "name": "amount",
+            "type": "float"
+        },
+        {
+            "name": "timestamp_of_order",
+            "type": "int"
+        },
+        {
+            "name": "order_type",
+            "type": "enum",
+            "symbols": [
+                "limit",
+                "market"
+            ]
+        }
+    ]
+}

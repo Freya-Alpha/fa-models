@@ -5,7 +5,11 @@
     "fields": [
         {
             "name": "id",
-            "type": "int"
+            "type": [
+                "null",
+                "int"
+            ],
+            "default": "null"
         },
         {
             "name": "algo_id",
@@ -29,25 +33,19 @@
         },
         {
             "name": "direction",
-            "type": {
-                "type": "enum",
-                "name": "Direction",
-                "symbols": [
-                    "long",
-                    "short"
-                ]
-            }
+            "type": "enum",
+            "symbols": [
+                "long",
+                "short"
+            ]
         },
         {
             "name": "side",
-            "type": {
-                "type": "enum",
-                "name": "Side",
-                "symbols": [
-                    "buy",
-                    "sell"
-                ]
-            }
+            "type": "enum",
+            "symbols": [
+                "buy",
+                "sell"
+            ]
         },
         {
             "name": "price",
@@ -62,16 +60,25 @@
             "type": "float"
         },
         {
-            "name": "datetime_of_creation",
-            "type": "string"
+            "name": "timestamp_of_creation",
+            "type": [
+                "null",
+                "int"
+            ],
+            "default": "null"
         },
         {
-            "name": "datetime_of_registration",
-            "type": "string"
+            "name": "timestamp_of_registration",
+            "type": [
+                "null",
+                "int"
+            ],
+            "default": "null"
         },
         {
             "name": "position_size_of_investment",
-            "type": "float"
+            "type": "float",
+            "default": 100
         }
     ]
 }

@@ -4,6 +4,7 @@ from typing import List, Dict, Union, Tuple, Optional, get_args
 import typing
 from sqlmodel import SQLModel
 from typing import TypeVar, Type
+from datetime import datetime
 
 T = TypeVar('T')
 
@@ -38,13 +39,24 @@ class SchemaGenerator:
         }
 
     # def create_field_array(self, model: typing.Type) -> Dict:
-    def generate_avro_schema(self, namespace:str , model_class: typing.Type) -> dict:
+    def generate_avro_schema(self, namespace:str , model_type: typing.Type) -> dict:
         fields = []
-        for name, python_type in model_class.__annotations__.items():
+        for name, python_type in model_type.__annotations__.items():
             origin = typing.get_origin(python_type)
-            print(f"PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
-            if origin is not None:
-                
+            print(f"\n\nPYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+
+            if origin is not None and origin is typing.Union:
+                print(f"NONE ORIGIN BUT OPTIONAL --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                # Field is optional, so add a new field definition for each possible type
+                # Not clear why not simply taking the first attribute.
+                # For now we limit it to the first one.
+                # for arg_type in typing.get_args(python_type):
+                #     field = self.create_avro_field(name, arg_type, optional=True)
+                #     fields.append(field)
+                field = self.create_avro_field(name, typing.get_args(python_type)[0], optional=True)
+                fields.append(field)
+
+            elif origin is not None:                
                 if issubclass(origin, List):
                     print(f"IS LIST --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                     item_type = typing.get_args(python_type)[0]
@@ -111,29 +123,57 @@ class SchemaGenerator:
                     else:
                         fields.append({"name": name, "type": {"type": self.get_avro_type(python_type)}})
             else:
+                # no origin
                 print(f"NONE ORIGIN --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                
                 if python_type.__class__.__name__ == "EnumMeta":
+                    # it's an ENUM
+                    # TODO build-in the OPTIONAL feature
                     print(f"NONE ORIGIN --> ENUM --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
-                    fields.append({
+                    field = {
                         "name": name,
-                        "type": {
-                            "type": "array",
-                            "items": {
-                                "type": "enum",
-                                "name": python_type.__name__,
-                                "symbols": [e.value for e in python_type]
-                            }
-                        }
-                    })
+                        "type": "enum",
+                        "symbols": [e.value for e in python_type]
+                        # "type": {
+                        #     "type": "array",
+                        #     "items": {
+                        #         "type": "enum",
+                        #         "name": python_type.__name__,
+                        #         "symbols": [e.value for e in python_type]
+                        #     }
+                        # }
+                    }     
+                    #field["default"] = model_type.__annotations__['order_type'].__args__[0].default_factory()         
                 else:
-                    fields.append({"name": name, "type": {"type": self.get_avro_type(python_type)}})
+                    # it's a simple type like str, int, float, etc.
+                    field = {"name": name, "type": self.get_avro_type(python_type)}
+                    # add default values if available                                   
+                    field = self.add_default_value(field, model_type, python_type, name)
 
-        return {"namespace": namespace, "type": "record", "name": model_class.__name__, "fields": fields}
+                fields.append(field)
+
+        return {"namespace": namespace, "type": "record", "name": model_type.__name__, "fields": fields}
+
+    def add_default_value(self, field, model_type:typing.Type, python_type: typing.Type, name: str):
+        """Checks if the primitive field requires a default value to be set."""
+        # now check if it has a default value.
+        default_value = None
+        # Check for regular classes                     
+        if hasattr(python_type, name):
+            def_val = getattr(python_type, name)
+            if isinstance(default_value, python_type):
+                default_value = default_value
+        # Check for SQLModel/Pydantic Classes   
+        if default_value == None:
+            default_value = model_type.__fields__[name].default                  
+        # If there is a default_value, then append it to the json.
+        if default_value is not None:
+            field["default"] = default_value     
+        return field
 
 
     def get_avro_type(self, python_type: typing.Type) -> str:
-        print(f"TYPE: {python_type}")
-        print(f"ORIGIN: {typing.get_origin(python_type)}")
+        print(f"TYPE: {python_type}, ORIGIN: {typing.get_origin(python_type)}, NAME: {python_type.__name__}")        
 
         if python_type == str:
             return "string"
@@ -143,10 +183,12 @@ class SchemaGenerator:
             return "float"
         elif python_type == bool:
             return "boolean"
-        # elif python_type == typing.Any:
-        #     return "null"
+        elif python_type == typing.Any :
+            return "null"
+        elif python_type.__name__ == "NoneType":
+            return "null"
         elif isinstance(python_type, Enum):
-            print("YES, IT RECOGNIZES ENUM!!!")
+            print("YES, IT'S FINALY RECOGNIZES ENUM!!!")
             raise Exception
             return "enum"
         elif python_type.__class__.__name__ == "EnumMeta":
@@ -157,9 +199,10 @@ class SchemaGenerator:
             return "array"
         elif typing.get_origin(python_type) == tuple:
             item_type = self.get_avro_type(typing.get_args(python_type)[0])
-            return {"type": "array", "items": item_type}
-        else:
-            
+            return {"type": "array", "items": item_type}        
+        elif isinstance(python_type, datetime):
+            return ""
+        else:            
             raise ValueError(f"Unsupported data type: {python_type}. \
                              {python_type.__name__} \
                              {python_type.__module__} \
@@ -171,6 +214,20 @@ class SchemaGenerator:
                              {python_type.__subclasscheck__} \
                              {typing.get_origin(python_type)} \
                              ")
+    
+    def create_avro_field(self, name: str, python_type: typing.Type, optional: bool) -> Dict:
+        if optional:
+            # Field is optional, so create a union with null and the actual type
+            return {
+                "name": name,
+                "type": ["null", self.get_avro_type(python_type)],
+                "default": "null" # or null???
+            }
+        else:
+            return {
+                "name": name,
+                "type": self.get_avro_type(python_type)
+            }
 
 
 

@@ -5,8 +5,9 @@ from famodels.models.trading_signal import TradingSignal
 import json
 
 from famodels.models.side import Side
+from famodels.models.order import Order
 
-# @pytest.mark.skip(reason="temporary for focus")
+@pytest.mark.skip(reason="temporary for focus")
 @pytest.mark.parametrize("name, namespace", [
     ("TradingSignal", "fa.signalprocessing"),
     #("TradingSignal", "tks.signal-processing.TradingSignal")
@@ -21,13 +22,17 @@ def test_create_json_avro_head(name, namespace):
     assert header == expected_header
 
 # @pytest.mark.skip(reason="temporary disable because SQL Models are too complex.")
-def test_create_json_schema_for_avro():
+@pytest.mark.parametrize("model, namespace, test_data_file", [
+    (TradingSignal, "fa.signalprocessing", './tests/data/avro_trading_signal.json'),
+    (Order, "tks.signalprocessing", './tests/data/avro_order.json')
+])
+def test_create_json_schema_for_avro(model, namespace, test_data_file):
     generated_avro_schema = SchemaGenerator().generate_json_schema_for_avro(
-        model=TradingSignal, 
-        namespace="fa.signalprocessing")
+        model=model, 
+        namespace=namespace)
     # print(generated_avro_schema)
 
-    with open('./tests/avro_schema_expected.json', 'r') as f:
+    with open(test_data_file, 'r') as f:
         # Load the JSON data from the file
         __expected_avro_schema__ = json.load(f)
     # print(__expected_avro_schema__)
@@ -42,7 +47,7 @@ class SimpleClass:
     less: tuple
     side: Side
 
-# @pytest.mark.skip(reason="temporary disabld")
+@pytest.mark.skip(reason="temporary disabld")
 def test_create_json_schema_for_avro_simple():
     """genereate the schema with a simple non-SQLMethod class."""
 

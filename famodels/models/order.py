@@ -38,8 +38,7 @@ class Order(BaseTradeSQLModel, table=True):
     side: Side
     price: float
     amount: float    
-    time_of_order: datetime
-    last_update: datetime
+    timestamp_of_order: int
     order_type: OrderType = OrderType.LIMIT
 
     def __getitem__(self, key):

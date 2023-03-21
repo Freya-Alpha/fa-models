@@ -32,10 +32,10 @@ class TradingSignal(SQLModel, table=True):
     price: float
     tp: float
     sl: float
-    datetime_of_creation: Optional[str]
+    timestamp_of_creation: Optional[int]
     """An ISO-UTC-compatible date and time of when the signal was created by the signal supplier."""
-    datetime_of_registration: Optional[str]
-    """The ISO-UTC-compatible date and time of when the signal was entering our interface."""
+    timestamp_of_registration: Optional[int]
+    """The ISO-UTC-compatible date and time of when the signal was entering our interface. This will be overridden."""
     position_size_of_investment: float = 100
     """Percentage of the investment position this algortihm is allowed to trade. Default is 100%, which is 1 position."""  
     
