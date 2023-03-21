@@ -43,7 +43,7 @@ class SchemaGenerator:
         fields = []
         for name, python_type in model_type.__annotations__.items():
             origin = typing.get_origin(python_type)
-            print(f"\n\nPYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+            # print(f"\n\nPYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
 
             if origin is not None and origin is typing.Union:
                 print(f"NONE ORIGIN BUT OPTIONAL --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
@@ -58,7 +58,7 @@ class SchemaGenerator:
 
             elif origin is not None:                
                 if issubclass(origin, List):
-                    print(f"IS LIST --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    # print(f"IS LIST --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                     item_type = typing.get_args(python_type)[0]
 
                     if issubclass(item_type, Enum):
@@ -124,12 +124,12 @@ class SchemaGenerator:
                         fields.append({"name": name, "type": {"type": self.get_avro_type(python_type)}})
             else:
                 # no origin
-                print(f"NONE ORIGIN --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                #print(f"NONE ORIGIN --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                 
                 if python_type.__class__.__name__ == "EnumMeta":
                     # it's an ENUM
                     # TODO build-in the OPTIONAL feature
-                    print(f"NONE ORIGIN --> ENUM --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
+                    # print(f"NONE ORIGIN --> ENUM --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                     field = {
                         "name": name,
                         # "type": "enum",
@@ -176,7 +176,7 @@ class SchemaGenerator:
 
 
     def get_avro_type(self, python_type: typing.Type) -> str:
-        print(f"TYPE: {python_type}, ORIGIN: {typing.get_origin(python_type)}")    
+        # print(f"TYPE: {python_type}, ORIGIN: {typing.get_origin(python_type)}")    
         origin = typing.get_origin(python_type)    
 
         if python_type == str:
@@ -228,7 +228,7 @@ class SchemaGenerator:
             return {
                 "name": name,
                 "type": ["null", self.get_avro_type(python_type)],
-                "default": "null" # or null???
+                "default": "null" 
             }
         else:
             return {
