@@ -17,7 +17,7 @@ class BaseSignalSQLModel(SQLModel):
 
 class TradingSignal(SQLModel, table=True):
     """A trading signal represents a suggestion to buy or sell. It is issued by a signal supplier (manually or algorithmically). It must have a correlating id to a trade."""
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[str] = Field(default=None, primary_key=True)
     algo_id: str
     """Provide the id of your algorithm entity (you might have more than one algorithm), which is sending this signal.  We have issued this id."""
     provider_id: str
