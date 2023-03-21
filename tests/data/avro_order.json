@@ -7,7 +7,7 @@
             "name": "id",
             "type": [
                 "null",
-                "int"
+                "long"
             ],
             "default": "null"
         },
@@ -17,7 +17,7 @@
         },
         {
             "name": "pos_idx",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "market",
@@ -29,19 +29,25 @@
         },
         {
             "name": "direction",
-            "type": "enum",
-            "symbols": [
-                "long",
-                "short"
-            ]
+            "type": {
+                "type": "enum",
+                "name": "direction",
+                "symbols": [
+                    "long",
+                    "short"
+                ]
+            }
         },
         {
             "name": "side",
-            "type": "enum",
-            "symbols": [
-                "buy",
-                "sell"
-            ]
+            "type": {
+                "type": "enum",
+                "name": "side",
+                "symbols": [
+                    "buy",
+                    "sell"
+                ]
+            }
         },
         {
             "name": "price",
@@ -53,15 +59,18 @@
         },
         {
             "name": "timestamp_of_order",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "order_type",
-            "type": "enum",
-            "symbols": [
-                "limit",
-                "market"
-            ]
+            "type": {
+                "type": "enum",
+                "name": "order_type",
+                "symbols": [
+                    "limit",
+                    "market"
+                ]
+            }
         }
     ]
 }

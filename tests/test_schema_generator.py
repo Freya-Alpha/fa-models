@@ -47,14 +47,14 @@ class SimpleClass:
     less: tuple
     side: Side
 
-@pytest.mark.skip(reason="temporary disabld")
+#@pytest.mark.skip(reason="temporary disabld")
 def test_create_json_schema_for_avro_simple():
     """genereate the schema with a simple non-SQLMethod class."""
 
     generated_avro_schema = SchemaGenerator().generate_json_schema_for_avro(
         model=SimpleClass, 
         namespace="fa.signalprocessing")
-    print(generated_avro_schema)
+    print(f"SCHEMA: {generated_avro_schema}")
 
     with open('./tests/data/avro_simple_schema.json', 'r') as f:
         # Load the JSON data from the file

@@ -7,7 +7,7 @@
             "name": "id",
             "type": [
                 "null",
-                "int"
+                "long"
             ],
             "default": "null"
         },
@@ -33,19 +33,25 @@
         },
         {
             "name": "direction",
-            "type": "enum",
-            "symbols": [
-                "long",
-                "short"
-            ]
+            "type": {
+                "type": "enum",
+                "name": "direction",
+                "symbols": [
+                    "long",
+                    "short"
+                ]
+            }
         },
         {
             "name": "side",
-            "type": "enum",
-            "symbols": [
-                "buy",
-                "sell"
-            ]
+            "type": {
+                "type": "enum",
+                "name": "side",
+                "symbols": [
+                    "buy",
+                    "sell"
+                ]
+            }
         },
         {
             "name": "price",
@@ -61,17 +67,13 @@
         },
         {
             "name": "timestamp_of_creation",
-            "type": [
-                "null",
-                "int"
-            ],
-            "default": "null"
+            "type": "long"
         },
         {
             "name": "timestamp_of_registration",
             "type": [
                 "null",
-                "int"
+                "long"
             ],
             "default": "null"
         },

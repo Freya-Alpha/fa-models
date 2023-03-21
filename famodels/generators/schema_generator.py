@@ -132,16 +132,18 @@ class SchemaGenerator:
                     print(f"NONE ORIGIN --> ENUM --> PYTHON_TYPE : {python_type}, NAME: {name}, ORIGIN: {origin}")
                     field = {
                         "name": name,
-                        "type": "enum",
-                        "symbols": [e.value for e in python_type]
-                        # "type": {
-                        #     "type": "array",
-                        #     "items": {
-                        #         "type": "enum",
-                        #         "name": python_type.__name__,
-                        #         "symbols": [e.value for e in python_type]
-                        #     }
-                        # }
+                        # "type": "enum",
+                        #"symbols": [e.value for e in python_type]
+                        "type": {
+                            "type": "enum",
+                            "name": name,
+                            "symbols": [e.value for e in python_type]
+                            # "items": {
+                            #     "type": "enum",
+                            #     "name": python_type.__name__,
+                            #     "symbols": [e.value for e in python_type]
+                            # }
+                        }
                     }     
                     #field["default"] = model_type.__annotations__['order_type'].__args__[0].default_factory()         
                 else:
@@ -165,7 +167,8 @@ class SchemaGenerator:
                 default_value = default_value
         # Check for SQLModel/Pydantic Classes   
         if default_value == None:
-            default_value = model_type.__fields__[name].default                  
+            if hasattr(model_type, "__fields__"):
+                default_value = model_type.__fields__[name].default                  
         # If there is a default_value, then append it to the json.
         if default_value is not None:
             field["default"] = default_value     
@@ -173,18 +176,24 @@ class SchemaGenerator:
 
 
     def get_avro_type(self, python_type: typing.Type) -> str:
-        print(f"TYPE: {python_type}, ORIGIN: {typing.get_origin(python_type)}, NAME: {python_type.__name__}")        
+        print(f"TYPE: {python_type}, ORIGIN: {typing.get_origin(python_type)}")    
+        origin = typing.get_origin(python_type)    
 
         if python_type == str:
             return "string"
         elif python_type == int:
-            return "int"
+            # since in python a value could be 64Bit, we never know if it is an int or long in avro. Thus long.
+            return "long"
         elif python_type == float:
             return "float"
         elif python_type == bool:
             return "boolean"
         elif python_type == typing.Any :
             return "null"
+        elif typing.get_origin(python_type) == list:
+            return "array"
+        elif python_type == tuple or origin == tuple:
+            return "array"
         elif python_type.__name__ == "NoneType":
             return "null"
         elif isinstance(python_type, Enum):
@@ -192,16 +201,14 @@ class SchemaGenerator:
             raise Exception
             return "enum"
         elif python_type.__class__.__name__ == "EnumMeta":
-            return "enum"
-        elif typing.get_origin(python_type) == list:
-            return "array"
-        elif python_type == tuple:
-            return "array"
-        elif typing.get_origin(python_type) == tuple:
-            item_type = self.get_avro_type(typing.get_args(python_type)[0])
-            return {"type": "array", "items": item_type}        
+            return "enum"        
+        # elif typing.get_origin(python_type) == tuple:
+        #     item_type = self.get_avro_type(typing.get_args(python_type)[0])
+        #     return {"type": "array", "items": item_type}        
         elif isinstance(python_type, datetime):
             return ""
+        elif isinstance(python_type, object):
+            raise "record"
         else:            
             raise ValueError(f"Unsupported data type: {python_type}. \
                              {python_type.__name__} \

@@ -11,6 +11,7 @@ Spark & Hale Robotic Industries
 
 ## General
 Run and compiled for Python 3.9.13.
+Expected to run for Python 3+
 
 ## Development
 
