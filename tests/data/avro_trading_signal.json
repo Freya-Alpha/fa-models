@@ -9,7 +9,11 @@
                 "null",
                 "string"
             ],
-            "default": "null"
+            "default": null
+        },
+        {
+            "name": "trade_correlation_id",
+            "type": "string"
         },
         {
             "name": "algo_id",
@@ -25,10 +29,6 @@
         },
         {
             "name": "exchange",
-            "type": "string"
-        },
-        {
-            "name": "trade_correlation_id",
             "type": "string"
         },
         {
@@ -75,7 +75,7 @@
                 "null",
                 "long"
             ],
-            "default": "null"
+            "default": null
         },
         {
             "name": "position_size_of_investment",

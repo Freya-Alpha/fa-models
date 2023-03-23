@@ -189,13 +189,13 @@ class SchemaGenerator:
         elif python_type == bool:
             return "boolean"
         elif python_type == typing.Any :
-            return "null"
+            return None
         elif typing.get_origin(python_type) == list:
             return "array"
         elif python_type == tuple or origin == tuple:
             return "array"
         elif python_type.__name__ == "NoneType":
-            return "null"
+            return None
         elif isinstance(python_type, Enum):
             print("YES, IT'S FINALY RECOGNIZES ENUM!!!")
             raise Exception
@@ -205,8 +205,6 @@ class SchemaGenerator:
         # elif typing.get_origin(python_type) == tuple:
         #     item_type = self.get_avro_type(typing.get_args(python_type)[0])
         #     return {"type": "array", "items": item_type}        
-        elif isinstance(python_type, datetime):
-            return ""
         elif isinstance(python_type, object):
             raise "record"
         else:            
@@ -228,7 +226,7 @@ class SchemaGenerator:
             return {
                 "name": name,
                 "type": ["null", self.get_avro_type(python_type)],
-                "default": "null" 
+                "default": None 
             }
         else:
             return {

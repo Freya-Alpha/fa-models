@@ -10,13 +10,14 @@ import json
 def test_generate_avro_with_object():
     """This test will generate a Trading object and populate it with test data 
     in order to run it against the validation."""
-    signal = TradingSignal(id=10, algo_id="sjlaf", provider_id="dfkadf", 
+    signal = TradingSignal(id=None, algo_id="sjlaf", provider_id="dfkadf", 
                            market="BTC/USDT", exchange="BINANCE", trade_correlation_id="423424", 
                            direction=Direction.LONG, side=Side.BUY, price=21431.14, tp=2444.8, 
                            sl=20950, timestamp_of_creation=1679428344467, 
                            timestamp_of_registration=None)
     # generate the json-definition for the avro schema
     schema_definition = SchemaGenerator().generate_json_schema_for_avro(TradingSignal, "fa.signalprocessing")
+    print(f"SCHEMA: {schema_definition}")
     parsed_avro = fastavro.parse_schema(schema_definition)
     #print(schema_definition)
     # make sure the schema is correct and matches with the data
@@ -41,6 +42,7 @@ def test_generate_avro_for_pulsar():
 
     # generate the json-definition for the avro schema
     schema_definition = SchemaGenerator().generate_json_schema_for_avro(TradingSignal, "fa.signalprocessing")
+    print(schema_definition)
     parsed_avro = fastavro.parse_schema(schema_definition)
     #print(schema_definition)
     # make sure the schema is correct and matches with the data
@@ -49,7 +51,7 @@ def test_generate_avro_for_pulsar():
     avro_schema = AvroSchema(None, schema_definition=parsed_avro)
     # client = Client("pulsar://localhost:6650")
     # producer = client.create_producer(
-    #     topic='persistent://fa/signalprocessing/raw-signals',
+    #     topic='persistent://fa/signal-processing/raw-signals',
     #     schema=avro_schema
     # )    
     # print(signal)

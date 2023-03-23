@@ -9,7 +9,7 @@
                 "null",
                 "string"
             ],
-            "default": "null"
+            "default": null
         },
         {
             "name": "account",
