@@ -12,8 +12,21 @@
             "default": null
         },
         {
+            "name": "supplier_correlation_id",
+            "type": [
+                "null",
+                "string"
+            ],
+            "default": null
+        },
+        {
             "name": "trade_correlation_id",
             "type": "string"
+        },
+        {
+            "name": "is_hot_signal",
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "algo_id",
