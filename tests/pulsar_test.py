@@ -31,7 +31,7 @@ def test_generate_avro_with_object():
 def test_generate_avro_for_pulsar():
     """This test will take a fixed avro schema written in json and compare it 
     against the generated avro schema (also in json) - and validate it
-    Pulsar localhost is not yet mocked. Keep Pular up for these tests and deactivate 
+    Pulsar localhost is not yet mocked. Keep Pulsar up for these tests and deactivate 
     if checking into GitHub. Otherwise it will fail in GitHub Actions.
     """
 
@@ -54,6 +54,5 @@ def test_generate_avro_for_pulsar():
     #     topic='persistent://fa/signal-processing/raw-signals',
     #     schema=avro_schema
     # )    
-    # print(signal)
     # producer.send(signal)
     # client.close()
