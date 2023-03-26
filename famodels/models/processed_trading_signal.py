@@ -5,7 +5,7 @@ from famodels.models.state_of_signal import StateOfSignal
 class ProcessedTradingSignal(TradingSignal):
     """As soon a Signal is processed by the signal qualifier, it is declared as a Processed Signal."""
 
-    def __init__(self, signal: TradingSignal, status: StateOfSignal, process_info: List[str] = None):
+    def __init__(self, signal: TradingSignal, status: StateOfSignal, process_info: List = None):
         self.status: StateOfSignal = status
         super().__init__(
             id=signal.id,
