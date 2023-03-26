@@ -22,13 +22,13 @@ class TradingSignal(SQLModel, table=True):
     """The id is marked optional - because it will be created by either SQL DB or a async method in an event-driven system.
         If you add an id here, it will be copied to the trade_correlation_id.
     """
-    supplier_correlation_id: Optional[str]
+    provider_signal_id: Optional[str]
     """You can use this correlation id as your own 'signal id' of your internal system. 
     Do not mistaken this correlation id with the trade correlation id."""    
-    trade_correlation_id: str
+    provider_trade_id: str
     """FA Models describes a Trade as a buy and a sell (not soley a buy or a sell). 
     Every trade is expected to consist of at least one buy order and zero or more sell orders. 
-    Thus, the trade_correlation_id is mandatory. Use this correlation id to link your signals to a trade. In other words, it is a grouping functionality."""
+    Thus, the trade_correlation_id is mandatory. Use this correlation id to link your signals to a trade. All updates provided by the system will hold the trade id."""
     is_hot_signal: bool = False
     """By default, every signal is marked as a cold signal. Thus, set to false. That is a paper-trading signal and will only be processed for forward-performance testing. 
     Hot signals are suggested to be processed by the order engines - provided all other requirements for hot trading are fulfilled."""    
@@ -41,11 +41,15 @@ class TradingSignal(SQLModel, table=True):
     exchange: str
     """The exchange you pulled your data from - or - wish to trade on."""
     direction: Direction
-    """The direction is actually provided by the trade, which is referenced by the correlation id. """
+    """Simply LONG or SHORT."""
     side: Side
+    """Simply BUY (open trade) or SELL (close trade)."""
     price: float
+    """The price to buy use for the limit-order or limit-stop-order"""
     tp: float
+    """Take-profit in absolute price."""
     sl: float
+    """Stop-loss in absolute price."""
     timestamp_of_creation: int
     """The timestamp in milliseconds when the signal was created by the signal supplier."""
     timestamp_of_registration: Optional[int]

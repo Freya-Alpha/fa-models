@@ -36,5 +36,5 @@ class DataGenerator:
             sl = random.uniform(price * 1.03, price * 1.20)
             
         return TradingSignal(id=id, algo_id=algo_id, provider_id=provider_id, market=market, exchange=exchange, 
-                      trade_correlation_id=trade_correlation_id, direction=direction, side=side, price=price,
+                      provider_trade_id=trade_correlation_id, direction=direction, side=side, price=price,
                        tp=tp, sl=sl)

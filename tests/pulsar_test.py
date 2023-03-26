@@ -11,7 +11,7 @@ def test_generate_avro_with_object():
     """This test will generate a Trading object and populate it with test data 
     in order to run it against the validation."""
     signal = TradingSignal(id=None, algo_id="sjlaf", provider_id="dfkadf", 
-                           market="BTC/USDT", exchange="BINANCE", trade_correlation_id="423424", 
+                           market="BTC/USDT", exchange="BINANCE", provider_trade_id="423424", 
                            direction=Direction.LONG, side=Side.BUY, price=21431.14, tp=2444.8, 
                            sl=20950, timestamp_of_creation=1679428344467, 
                            timestamp_of_registration=None)
