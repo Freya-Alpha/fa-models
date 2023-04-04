@@ -9,8 +9,8 @@ class ProcessedTradingSignal(TradingSignal):
         self.status: StateOfSignal = status
         super().__init__(
             id=signal.id,
-            supplier_correlation_id=signal.provider_signal_id,
-            trade_correlation_id=signal.provider_trade_id,
+            provider_signal_id=signal.provider_signal_id,
+            provider_trade_id=signal.provider_trade_id,
             is_hot_signal=signal.is_hot_signal,
             algo_id=signal.algo_id,
             provider_id=signal.provider_id,
