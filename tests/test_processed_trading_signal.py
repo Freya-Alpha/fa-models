@@ -2,7 +2,7 @@
 from time import time
 import pytest
 from famodels.models.direction import Direction
-from famodels.models.processed_trading_signal import ProcessedTradingSignal
+from models.processed_signal import ProcessedTradingSignal
 from famodels.models.side import Side
 from famodels.models.state_of_signal import StateOfSignal
 

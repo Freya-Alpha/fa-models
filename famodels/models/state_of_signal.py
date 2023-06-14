@@ -5,5 +5,5 @@ class StateOfSignal(str, Enum):
     SUBMITTED = "submitted"
     ERRONEOUS = "erroneous"   
     REJECTED = "rejected"
-    ACCEPTED = "accepted"
+    QUALIFIED = "qualified"
     EXECUTED = "executed"

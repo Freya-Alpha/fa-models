@@ -3,7 +3,5 @@ setuptools
 twine
 sqlmodel
 pytest
-fastavro
-pulsar-client[avro]
-#fastavro is already in the pulsar client
-#fastavro
+redis[hiredis]
+redis-om

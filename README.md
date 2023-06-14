@@ -25,17 +25,38 @@ Simply run: `pip install fa-models`
 Import in modules without the dash (e.g.): `from famodels.signal import Signal`
 
 ### Setup as Contributor
-Create the virtul environment: `py -m venv .venv`
-Start the Environment: `./.venv/Scripts/activate`. Use `deactivate`to stop it.
-Update the PIP: `py -m pip install --upgrade pip`
+Create the virtul environment: 
+```
+py -m venv .venv
+```
+Start the Environment: 
+```
+./.venv/Scripts/activate
+```
+ (or allow VS Code to start it). Use `deactivate`to stop it.
 
-All the required libraries must be listed in requirements.txt and installed by  `py -m pip install -r .\requirements.txt`
+All the required libraries must be listed in requirements.txt and installed by  
+```
+python -m pip install -r .\requirements.txt
+```
+For Dev use 
+```
+python -m pip install -r .\requirements-dev.txt
+```
 
 To cleanup the environment run:
-`pip3 freeze > to-uninstall.txt` and then
-`pip3 uninstall -y -r to-uninstall.txt`
+```
+pip3 freeze > to-uninstall.txt
+```
+ and then
+```
+pip3 uninstall -y -r to-uninstall.txt
+```
 
-or `pip3 install pip-autoremove`
+or 
+```
+pip3 install pip-autoremove
+```
 
 ### Build Library
 Prerequisite: make sure that you give your Operating System user the right to modify files in the python directory. The directory where pyhton is installed.
