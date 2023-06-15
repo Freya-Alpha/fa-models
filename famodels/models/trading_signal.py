@@ -18,10 +18,11 @@ class TradingSignal(JsonModel):
     provider_trade_id: str = Field(index=True)
     """FA Models describes a Trade as a buy and a sell (not soley a buy or a sell). 
     # Every trade is expected to consist of at least one buy order and zero or more sell orders. 
-    # Thus, the trade_correlation_id is mandatory. Use this correlation id to link your signals to a trade. All updates provided by the system will hold the trade id."""
-    is_hot_signal: bool = Field(default=False, index=False)
-    """By default, every signal is marked as a cold signal. Thus, set to false. That is a paper-trading signal and will only be processed for forward-performance testing. 
-    Hot signals are suggested to be processed by the order engines - provided all other requirements for hot trading are fulfilled."""    
+    # Thus, the trade_correlation_id is mandatory. Use this correlation id to link your signals to a trade. All updates provided by the system will hold the trade id."""    
+    is_hot_signal: int = Field(default=0, index=True)
+    """By default, every signal is marked as a cold signal. Thus, set to 0. That is a paper-trading signal and will only be processed for forward-performance testing. 
+    Hot signals are suggested to be processed by the order engines - provided all other requirements for hot trading are fulfilled.
+    Set 1 (not true) to this value to suggest a hot trade."""    
     market: str = Field(index=True)
     """The market you want to trade. e.g. BTC/USDT"""
     exchange: str = Field(index=True)
