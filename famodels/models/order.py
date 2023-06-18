@@ -5,41 +5,29 @@ from famodels.models.direction import Direction
 from famodels.models.order_type import OrderType
 from famodels.models.side import Side
 from typing import Optional
-from sqlmodel import Field, SQLModel
+from redis_om import Migrator
+from redis_om import (Field, JsonModel)
 
-###### JSON TO CLASS MAPPING EXAMPLE
-# external_data = {
-#     'id': '123',
-#     'signup_ts': '2019-06-01 12:22',
-#     'friends': [1, 2, '3'],
-# }
-# user = User(**external_data)
 
-class BaseTradeSQLModel(SQLModel):
-    def __init__(self, **kwargs):
-        self.__config__.table = False
-        super().__init__(**kwargs)
-        self.__config__.table = True
-
-    class Config:
-        validate_assignment = True
-
-class Order(BaseTradeSQLModel, table=True):
-    """Our order model (not the order model from the CEX). It can be part of a trade."""
-
-    __table_args__ = {'extend_existing': True}
-    
-    id: Optional[str] = Field(default=None, primary_key=True)
-    account: str
-    pos_idx: int
-    market: str
-    correlation_id: float
-    direction: Direction
-    side: Side
+class Order(JsonModel):
+    """This model is for hot orders ONLY! Use ColdOrder for paper trading.
+    """
+    id: str = Field(index=True)
+    signal_id: str = Field(index=True)
+    order_type: OrderType = Field(index=True, default=OrderType.LIMIT)        
+    market: str = Field(index=True)
+    direction: Direction = Field(index=True)
+    side: Side = Field(index=True)
     price: float
     amount: float    
-    timestamp_of_order: int
-    order_type: OrderType = OrderType.LIMIT
+    account: str = Field(index=True)
+    pos_idx: int = Field(index=True)
+    timestamp_of_order: int = Field(index=True)
+    comission: float    
+
+    class Meta:
+        global_key_prefix="order-and-trade-processing"
+        model_key_prefix="order"
 
     def __getitem__(self, key):
         return self.__dict__[key]

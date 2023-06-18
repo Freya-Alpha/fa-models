@@ -1,7 +1,12 @@
+import os
 from typing import List, Optional
 from famodels.models.trading_signal import TradingSignal
 from famodels.models.state_of_signal import StateOfSignal
 from redis_om import Field
+from redis_om.connections import get_redis_connection
+
+REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
+print(f"the env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
 class ProcessedSignal(TradingSignal):
     """As soon a trading signal is processed by the signal qualifier, it is declared as a Processed Signal.
@@ -17,6 +22,7 @@ class ProcessedSignal(TradingSignal):
     class Meta:
         global_key_prefix="signal-processing"
         model_key_prefix="processed-signal"
+        database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
     # class Config:
     #     orm_mode = True
