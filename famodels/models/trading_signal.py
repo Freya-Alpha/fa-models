@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 from typing import Optional
 from uuid import UUID
@@ -5,6 +6,10 @@ from famodels.models.direction import Direction
 from famodels.models.side import Side
 from redis_om import Migrator
 from redis_om import (Field, JsonModel)
+from redis_om.connections import get_redis_connection
+
+REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
+print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
 class TradingSignal(JsonModel):
     """A trading signal represents a suggestion to buy or sell. It is issued by a signal supplier (manually or algorithmically). It must have a correlating id to a trade."""    
@@ -49,7 +54,6 @@ class TradingSignal(JsonModel):
     class Meta:
         global_key_prefix="signal-processing"
         model_key_prefix="raw-signal"
-    # class Config:
-    #     orm_mode = True
+        database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
 Migrator().run()

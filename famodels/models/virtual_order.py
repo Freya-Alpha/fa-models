@@ -12,7 +12,7 @@ from redis_om import (Field, JsonModel)
 from redis_om.connections import get_redis_connection
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
-print(f"the env-var REDIS_OM_URL is: {REDIS_OM_URL}")
+print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
 class VirtualOrder(JsonModel):
     """A cold order is used for forward testing / paper trading.
@@ -46,3 +46,4 @@ class VirtualOrder(JsonModel):
     def __getitem__(self, key):
         return self.__dict__[key]
     
+Migrator().run()

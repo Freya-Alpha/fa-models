@@ -2,7 +2,8 @@ import os
 from typing import List, Optional
 from famodels.models.trading_signal import TradingSignal
 from famodels.models.state_of_signal import StateOfSignal
-from redis_om import Field
+from redis_om import Migrator
+from redis_om import (Field, JsonModel)
 from redis_om.connections import get_redis_connection
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
@@ -24,10 +25,4 @@ class ProcessedSignal(TradingSignal):
         model_key_prefix="processed-signal"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
-    # class Config:
-    #     orm_mode = True
-
-
-        
-
-    
+Migrator().run()
