@@ -107,7 +107,10 @@ twine upload -r testpypi dist/*
 
 Login with username: svabra (password should be known)
 
-If the test-upload was successful, finally, upload to pypi production: `twine upload dist/*`
+If the test-upload was successful, finally, upload to pypi production: 
+```
+twine upload dist/*
+```
 
 Done.
 
