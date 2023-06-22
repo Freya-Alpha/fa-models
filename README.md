@@ -69,19 +69,41 @@ In order to use your own version of the project - to maybe contribute to the lib
 ### Releasing a new version
 
 Delete any old files in the /dist and build folder of your local environment.
-Update your pip: `python -m pip install --upgrade pip`
+Update your pip: 
+```
+python -m pip install --upgrade pip
+```
 
-Install the tools build, twine and bumpver: `python -m pip install build twine bumpver`
-Upgrade the setuptools: `pip install --upgrade setuptools`
+Install the tools build, twine and bumpver: 
+```
+python -m pip install build twine bumpver
+```
+Upgrade the setuptools: 
 
-Bump the version in pyproject.toml: `bumpver update --patch`
+```
+pip install --upgrade setuptools
+```
+
+Bump the version in pyproject.toml: 
+```
+bumpver update --patch
+```
 This will commit a new version to GitHub.
 
-Build the project: `python -m build`
+Build the project: 
+```
+python -m build
+```
 
-Check the distribution: `twine check dist/*`
+Check the distribution: 
+```
+twine check dist/*
+```
 
-Upload to test-pypi to validate: `twine upload -r testpypi dist/*`
+Upload to test-pypi to validate: 
+```
+twine upload -r testpypi dist/*
+```
 
 Login with username: svabra (password should be known)
 
