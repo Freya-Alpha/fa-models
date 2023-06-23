@@ -1,24 +1,20 @@
 from datetime import datetime
+import os
 from famodels.models.state_of_trade import StateOfTrade
 from famodels.models.direction import Direction
 from typing import Optional
-from sqlmodel import Field, SQLModel
 import uuid
+from redis_om import Migrator
+from redis_om import (Field, JsonModel)
+from redis_om.connections import get_redis_connection
 
-class BaseTradeSQLModel(SQLModel):
-    def __init__(self, **kwargs):
-        self.__config__.table = False
-        super().__init__(**kwargs)
-        self.__config__.table = True
+REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
+print(f"the env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
-    class Config:
-        validate_assignment = True
 
-class Trade(BaseTradeSQLModel, table=True):
+class Trade(JsonModel):
     """A trade in our system is composed of a buy and a sell order. Do not mistaken it for a trade from the CEX.
         Create a new Trade record for every update and correlate them with trade_id. See attribute #trade_id"""   
-
-    __table_args__ = {'extend_existing': True}
     id: Optional[int] = Field(default=None, primary_key=True)    
     trade_id: Optional[str] = Field(default=str(uuid.uuid4()), nullable=False)
     # sort_index:int = field(init=False, repr=False)
@@ -40,5 +36,12 @@ class Trade(BaseTradeSQLModel, table=True):
     profit_and_loss_percentage: Optional[float] = None
     profit_and_loss_amount: Optional[float] = None
 
+    class Meta:
+        global_key_prefix="order-and-trade-processing"
+        model_key_prefix="trade"
+        database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
+
     def __getitem__(self, key):
         return self.__dict__[key]    
+    
+# Migrator().run()

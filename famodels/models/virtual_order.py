@@ -46,4 +46,4 @@ class VirtualOrder(JsonModel):
     def __getitem__(self, key):
         return self.__dict__[key]
     
-Migrator().run()
+# Migrator().run()

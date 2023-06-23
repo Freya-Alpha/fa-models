@@ -66,7 +66,7 @@ Use `python setup.py bdist_wheel` to create the dist, build and .eggs folder.
 In order to use your own version of the project - to maybe contribute to the library - simply clone the code from github into new directory. Then add the path of that new directory to the requirements.txt file of your project. Then change in fa-models whatever you recommend to improve. Don't forget the Open-Closed Principle: extend only (unless it requires a breaking change)
 
 
-### Releasing a new version
+## Releasing a new version
 
 Delete any old files in the /dist and build folder of your local environment.
 Update your pip: 

@@ -56,4 +56,4 @@ class TradingSignal(JsonModel):
         model_key_prefix="raw-signal"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
-Migrator().run()
+# Migrator().run()
