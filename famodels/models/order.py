@@ -1,11 +1,8 @@
-from datetime import datetime
 from typing import List, Set, Optional
 from famodels.models.state_of_trade import StateOfTrade
 from famodels.models.direction import Direction
 from famodels.models.order_type import OrderType
 from famodels.models.side import Side
-from typing import Optional
-from redis_om import Migrator
 from redis_om import (Field, JsonModel)
 from redis_om.connections import get_redis_connection
 import os
@@ -19,8 +16,10 @@ class Order(JsonModel):
     """
     id: str = Field(index=True)
     signal_id: str = Field(index=True)
+    algo_id: str = Field(index=True)
     order_type: OrderType = Field(index=True, default=OrderType.LIMIT)        
     market: str = Field(index=True)
+    exchange: str = Field(index=True)
     direction: Direction = Field(index=True)
     side: Side = Field(index=True)
     price: float

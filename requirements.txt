@@ -5,3 +5,4 @@ sqlmodel
 pytest
 redis[hiredis]
 redis-om
+cryptography
