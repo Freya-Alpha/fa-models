@@ -13,7 +13,7 @@ def setup_redis():
         # Connect to Redis and disable protected mode
         r = redis.Redis(host='localhost', port=6379, db=0)
         r.config_set('protected-mode', 'no')
-        from famodels.models.investor import Investor
+        
     yield
     if 'CI' not in os.environ:
         os.system('docker stop redis-unit-test')
@@ -22,6 +22,6 @@ def setup_redis():
 
 def test_investor_model():
     # Now we can create an instance of `Investor` without connecting to a real Redis server
-    
+    from famodels.models.investor import Investor
     investor = Investor(investor_id='123', email='test@example.com')
 
