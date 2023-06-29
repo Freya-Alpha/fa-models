@@ -3,6 +3,7 @@ from famodels.models.investor import Investor
 import hashlib
 import os
 import time
+import redis
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_redis():
@@ -10,6 +11,9 @@ def setup_redis():
         os.system('docker run --name redis-unit-test -d -p 6379:6379 redis/redis-stack:latest')
         # give some time for the Redis server to start
         time.sleep(2)
+        # Connect to Redis and disable protected mode
+        r = redis.Redis(host='localhost', port=6379, db=0)
+        r.config_set('protected-mode', 'no')
     yield
     if 'CI' not in os.environ:
         os.system('docker stop redis-unit-test')
