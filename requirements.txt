@@ -6,3 +6,5 @@ pytest
 redis[hiredis]
 redis-om
 cryptography
+pydantic[email]
+fakeredis[json]

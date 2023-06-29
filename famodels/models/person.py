@@ -1,11 +1,9 @@
 from datetime import datetime
 import os
 from typing import List
+from pydantic import EmailStr
 from redis_om import (Field, JsonModel)
 from redis_om.connections import get_redis_connection
-
-from models.algorithm import Algorithm
-from models.person import Person
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
@@ -13,6 +11,8 @@ print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 class Person(JsonModel):    
     given_name: str = Field(index=True)
     family_name: str = Field(index=True, full_text_search=True)
+    email: EmailStr = Field(index=True)
+    sex: int = Field(index=True)    
     nationality_iso3: str = Field(index=True)
     identification_type: str = Field(index=True)
     identification_refernce: str = Field(index=True)

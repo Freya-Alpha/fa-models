@@ -1,19 +1,19 @@
 from datetime import datetime
 import os
-from typing import List
-from redis_om import (Field, JsonModel)
+from typing import List, Optional
+from redis_om import (Field, JsonModel, EmbeddedJsonModel)
 from redis_om.connections import get_redis_connection
 
-from models.subscription import Subscription
+from famodels.models.subscription import Subscription
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
-class Fund(JsonModel):
+class Fund(EmbeddedJsonModel):
     fund_id:str = Field(index=True)
     name:str = Field(index=True)
     investor_id:str = Field(index=True)    
-    subscriptions: List[Subscription] = Field(index=True)  
+    subscriptions: Optional[List[Subscription]] = Field(index=False)  
     compounding: bool = Field(index=True)
     absolute_max_amount: float
 

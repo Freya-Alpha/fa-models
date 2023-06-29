@@ -1,11 +1,11 @@
 
-from time import time
-import pytest
-from famodels.models.direction import Direction
-from famodels.models.side import Side
-from famodels.models.state_of_signal import StateOfSignal
+# from time import time
+# import pytest
+# from famodels.models.direction import Direction
+# from famodels.models.side import Side
+# from famodels.models.state_of_signal import StateOfSignal
 
-from famodels.models.trading_signal import TradingSignal
+# from famodels.models.trading_signal import TradingSignal
 
 # set the redis om env variable before instantiating the object.
 # SIGNAL_1 = TradingSignal(id="10", provider_signal_id="sifwi", provider_trade_id="wuwor232", is_hot_signal=False, algo_id="232424", market="BTC/USDT", 
