@@ -15,7 +15,7 @@ jobs:
           - 6379:6379
         options: >-
           --entrypoint redis-server
-          --bind 0.0.0.0
+          --protected-mode no
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
