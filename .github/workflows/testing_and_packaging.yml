@@ -11,6 +11,7 @@ jobs:
     services:
       redis:
         #image: redis
+        # use the redis-stack-server without redis-insight
         image: redis/redis-stack-server
         ports:
           - 6379:6379
