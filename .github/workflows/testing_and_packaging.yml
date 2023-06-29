@@ -34,8 +34,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running all PyTests
       env:
-        REDIS_OM_URL: redis://127.0.0.1:6379/0
+        REDIS_OM_URL: redis://mysecretpassword127.0.0.1:6379/0
       run: |
-        export REDIS_OM_URL=redis://:mysecretpassword@127.0.0.1:6379/0
         redis-cli
         pytest
