@@ -16,9 +16,8 @@ jobs:
         ports:
           - 6379:6379
         options: >-
-          --entrypoint redis-server
-          --requirepass mysecretpassword
-          --health-cmd "redis-cli ping"
+          --entrypoint "redis-server --requirepass mysecretpassword"
+          --health-cmd "redis-cli -a mysecretpassword ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5     
@@ -35,7 +34,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running all PyTests
       env:
-        REDIS_OM_URL: redis://mysecretpassword127.0.0.1:6379/0
+        REDIS_OM_URL: redis://:mysecretpassword@localhost:6379/0
       run: |
-        redis-cli
         pytest
