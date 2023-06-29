@@ -10,7 +10,7 @@ jobs:
         python-version: ["3.9.13"]
     services:
       redis:
-        image: redis/redis:latest
+        image: redis:latest
         ports:
           - 6379:6379
         options: >-
