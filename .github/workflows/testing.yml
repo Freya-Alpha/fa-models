@@ -15,7 +15,6 @@ jobs:
           - 6379:6379
         options: >-
           --entrypoint redis-server
-          --command " --protected-mode no"
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
@@ -33,5 +32,5 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running all PyTests
       run: |
-        export REDIS_OM_URL=redis://localhost:6379
+        export REDIS_OM_URL=redis://localhost:6379/0
         pytest
