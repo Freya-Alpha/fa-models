@@ -37,4 +37,4 @@ jobs:
       env:
         REDIS_OM_URL: redis://localhost:6379/0
       run: |
-        pytest
+        pytest -s -vv
