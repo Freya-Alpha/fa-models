@@ -16,8 +16,7 @@ jobs:
         ports:
           - 6379:6379
         options: >-
-          --protected-mode no
-          --entrypoint redis-server
+          --entrypoint "redis-server --requirepass mysecretpassword"
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
@@ -37,5 +36,6 @@ jobs:
       env:
         REDIS_OM_URL: redis://127.0.0.1:6379/0
       run: |
-        export REDIS_OM_URL=redis://127.0.0.1:6379/0
+        export REDIS_OM_URL=redis://:mysecretpassword@127.0.0.1:6379/0
+        redis-cli
         pytest
