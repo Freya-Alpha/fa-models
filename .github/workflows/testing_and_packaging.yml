@@ -14,8 +14,7 @@ jobs:
         # image: redis/redis-stack-server
         ports:
           - 6379:6379
-        options: >-
-          --entrypoint redis-server
+        options: >-          
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
