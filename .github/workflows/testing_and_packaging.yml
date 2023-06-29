@@ -16,6 +16,7 @@ jobs:
         ports:
           - 6379:6379
         options: >-
+          --protected-mode no
           --entrypoint redis-server
           --health-cmd "redis-cli ping"
           --health-interval 10s
