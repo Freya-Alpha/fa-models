@@ -19,7 +19,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5     
-        #command: --protected-mode no    
+        command: --protected-mode no    
     steps:
     - uses: actions/checkout@v3    
     - name: Set up Python ${{ matrix.python-version }}
@@ -32,6 +32,8 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running all PyTests
+      env:
+        REDIS_OM_URL: redis://localhost:6379/0
       run: |
         export REDIS_OM_URL=redis://localhost:6379/0
         pytest
