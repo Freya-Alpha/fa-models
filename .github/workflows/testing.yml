@@ -33,5 +33,5 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running all PyTests
       run: |
-        export REDIS_OM_URL=redis://0.0.0.0:6379/0
+        export REDIS_OM_URL=redis://localhost:6379/0
         pytest
