@@ -21,4 +21,5 @@ def test_investor_model():
     # Now we can create an instance of `Investor` without connecting to a real Redis server
     from famodels.models.investor import Investor
     investor = Investor(investor_id='123', email='test@example.com')
+    print(investor.email)
 
