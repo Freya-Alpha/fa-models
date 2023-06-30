@@ -2,6 +2,8 @@ name: Unit Tests, build & deploy library
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**.bumpversion.cfg'
 jobs:
 
   # BUILD AND TEST THE LIBRARY
