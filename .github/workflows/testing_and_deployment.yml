@@ -45,7 +45,7 @@ jobs:
   # DEPLOY THE LIBRARY TO PYPI
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AUTO]' == false)
+    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AUTO]') == false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
