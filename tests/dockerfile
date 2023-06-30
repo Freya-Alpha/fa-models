@@ -1,4 +1,4 @@
-FROM redis/redis-stack:latest
+FROM redislabs/redisjson:latest
 RUN mkdir -p /usr/local/etc/redis
 RUN echo "protected-mode no" > /usr/local/etc/redis/redis.conf
 CMD ["redis-server", "/usr/local/etc/redis/redis.conf"]
