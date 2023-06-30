@@ -61,7 +61,7 @@ jobs:
       run: |
         bumpver update --patch
         git config --local user.email "brayan@brayan.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.name "svabra"
         git commit -am "Bump version"
     - name: Build and publish
       env:
