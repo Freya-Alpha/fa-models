@@ -2,21 +2,17 @@ name: Unit Tests, build & deploy library
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - '**.bumpversion.cfg'
 jobs:
 
   # BUILD AND TEST THE LIBRARY
   build:
+    if: "!contains(github.event.head_commit.message, '[AUTO]')"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9.13"]
     services:
       redis:
-        #image: redis
-        # use the redis-stack-server without redis-insight
-        # we use our own redis version which turns off the protected-mode
         image: redis/redis-stack-server
         ports:
           - 6379:6379
@@ -26,7 +22,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5     
         env:
-            REDIS_ARGS: "--protected-mode no"
+          REDIS_ARGS: "--protected-mode no"
     steps:
     - uses: actions/checkout@v3
       with:
@@ -49,7 +45,7 @@ jobs:
   # DEPLOY THE LIBRARY TO PYPI
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+    if: github.ref == 'refs/heads/main' && "!contains(github.event.head_commit.message, '[AUTO]')"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -68,7 +64,7 @@ jobs:
         git config --local user.email "brayan@brayan.com"
         git config --local user.name "svabra"
     - name: Bump version
-      run: bumpver update --patch
+      run: bumpver update --patch --commit-message "[AUTO] Bump version"
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
