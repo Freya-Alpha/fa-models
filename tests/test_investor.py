@@ -9,10 +9,7 @@ def setup_redis():
     if 'CI' not in os.environ:
         os.system('docker run --name redis-unit-test -d -p 6379:6379 redis/redis-stack-server:latest')
         # give some time for the Redis server to start
-        time.sleep(2)
-        # Connect to Redis and disable protected mode
-        # r = redis.Redis(host='localhost', port=6379, db=0)
-        # print(f"PROTECTED MODE XXXXXXXXXXXXXXXXXXX: {r.config_get('protected-mode')}")
+        time.sleep(2)        
         
     yield
     if 'CI' not in os.environ:
