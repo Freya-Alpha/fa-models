@@ -36,4 +36,4 @@ class Investor(JsonModel):
     class Meta:
         global_key_prefix="fa-investor-processing"
         model_key_prefix="investor"
-        # database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
+        database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
