@@ -13,7 +13,7 @@ jobs:
         #image: redis
         # use the redis-stack-server without redis-insight
         # we use our own redis version which turns off the protected-mode
-        image: svabra/redis-stack-server
+        image: redis/redis-stack-server
         ports:
           - 6379:6379
         options: >-
