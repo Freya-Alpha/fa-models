@@ -21,7 +21,7 @@ class ProcessedSignal(TradingSignal):
     process_info: List[str]
 
     class Meta:
-        global_key_prefix="signal-processing"
+        # global_key_prefix="signal-processing"
         model_key_prefix="processed-signal"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 

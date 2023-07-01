@@ -2,8 +2,8 @@
 A set of models often used for trading services. The library offers merely models, tests and data and schema generators. The Schemas Generator offers to translate the models to Avro Schemas written in JSON.
 
 ## Sponsors
-Freya Alpha
-The Kára System
+Freya Alpha,
+The Kára System,
 Spark & Hale Robotic Industries
 
 ## TODO
@@ -105,7 +105,7 @@ Upload to test-pypi to validate:
 twine upload -r testpypi dist/*
 ```
 
-Login with username: svabra (password should be known)
+Login with username: (password should be known)
 
 If the test-upload was successful, finally, upload to pypi production: 
 

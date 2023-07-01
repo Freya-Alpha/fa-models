@@ -19,6 +19,6 @@ class SignalSupplier(JsonModel):
     algorithms: List[Algorithm] = Field(index=True)
     
     class Meta:
-        global_key_prefix="fa-investor-processing"
+        # global_key_prefix="fa-investor-processing"
         model_key_prefix="signal-supplier"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)

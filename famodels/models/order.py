@@ -30,7 +30,7 @@ class Order(JsonModel):
     comission: float    
 
     class Meta:
-        global_key_prefix="order-and-trade-processing"
+        # global_key_prefix="order-and-trade-processing"
         model_key_prefix="order"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 

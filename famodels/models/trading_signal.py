@@ -52,7 +52,7 @@ class TradingSignal(JsonModel):
     """The timestamp in milliseconds when the signal was entering our interface. This will be overridden."""    
 
     class Meta:
-        global_key_prefix="signal-processing"
+        # global_key_prefix="signal-processing"
         model_key_prefix="raw-signal"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 

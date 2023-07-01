@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fa-models"
 version = "1.0.65"
-description = "The library describes the most common models used in trading systems. It is based on sqlmodel and offers many built-in features like serialization and data generators."
+description = "A simple library of trading models."
 readme = "README.md"
 authors = [{ name = "Brayan Svan", email = "brayan@freyaalpha.com" }]
 #license = { file = "LICENSE" }

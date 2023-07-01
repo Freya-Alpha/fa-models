@@ -11,6 +11,6 @@ class Algorithm(JsonModel):
     provider_id: str = Field(index=True) 
     
     class Meta:
-        global_key_prefix="fa-investor-processing"
+        # global_key_prefix="fa-investor-processing"
         model_key_prefix="algorithm"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)

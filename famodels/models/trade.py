@@ -37,7 +37,7 @@ class Trade(JsonModel):
     profit_and_loss_amount: Optional[float] = None
 
     class Meta:
-        global_key_prefix="order-and-trade-processing"
+        # global_key_prefix="order-and-trade-processing"
         model_key_prefix="trade"
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
