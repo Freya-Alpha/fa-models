@@ -3,6 +3,7 @@ from typing import List, Optional
 from pydantic import EmailStr
 from redis_om import Field, JsonModel, EmbeddedJsonModel
 from redis_om.connections import get_redis_connection
+from famodels.models.state_of_investor import StateOfInvestor
 from famodels.models.person import Person
 from cryptography.fernet import Fernet
 from hashlib import sha256
@@ -14,8 +15,6 @@ print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
 key = os.environ.get("ENCRYPTION_KEY").encode()
 ENCRYPTION_KEY = urlsafe_b64encode(sha256(key).digest())
-
-SALT = os.environ.get("SALT")
 
 class Subscription(EmbeddedJsonModel):
     subscription_id: str = Field(index=False)
@@ -75,6 +74,7 @@ class Investor(JsonModel):
     investor_id: str = Field(index=True)
     email: EmailStr = Field(index=True)
     accountable: Person = Field(index=True)        
+    state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
     _passphrase: Optional[str]
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
     funds: Optional[List[Fund]]
