@@ -29,10 +29,10 @@ class Subscription(EmbeddedJsonModel):
 
 class Fund(EmbeddedJsonModel):
     fund_id:str = Field(index=True)
-    name:str = Field(index=True)
-    investor_id:str = Field(index=True)    
-    subscriptions: Optional[List[Subscription]] = Field(index=False)  
-    compounding: int = Field(index=True, default=1)
+    name:str = Field(index=True)    
+    compounding: str = Field(index=True, default="true")
+    """Marks the investment as to be compounded with every trade. CAUTION: Due to redis-om model restrictions this could not be a boolean as it's value suggests. The workaround is a str with values 'true' and 'false'. Default is 'true'. Will bechanged as soon the redis-om library has enhanced."""
+    subscriptions: Optional[List[Subscription]]  
     absolute_max_amount: Optional[float]
     
     class Meta:
@@ -57,7 +57,6 @@ class EncryptionService:
         f = Fernet(self.key)
         return f.decrypt(encrypted_value.encode()).decode()
 
-
 class ExchangeKey(EmbeddedJsonModel):
     exchange: str = Field(index=True)
     key_id: str = Field(index=True)
@@ -74,14 +73,13 @@ class ExchangeKey(EmbeddedJsonModel):
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
 
-
 class Investor(JsonModel):
     investor_id: str = Field(index=True)
     email: EmailStr = Field(index=True)
     accountable: Person = Field(index=True)        
     _passphrase: Optional[str]
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
-    # funds: Optional[List[Fund]]
+    funds: Optional[List[Fund]]
     exchange_keys: Optional[List[ExchangeKey]]
 
     @property

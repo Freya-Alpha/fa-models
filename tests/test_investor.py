@@ -103,7 +103,7 @@ def test_exchange_key(exchange, key_id, key_secret):
 @pytest.mark.parametrize(
     "investor_id, email, funds",
     [
-        ("1", "investor1@example.com", [{"fund_id": "f1", "name": "fund1", "investor_id": "1", "subscriptions": [{"subscription_id": "s1", "algo_id": "a1"}], "compounding": 1, "absolute_max_amount": 1000.0}, {"fund_id": "f2", "name": "fund2", "investor_id": "1", "subscriptions": [{"subscription_id": "s2", "algo_id": "a2"}, {"subscription_id": "s3", "algo_id": "a3"}], "compounding": 0, "absolute_max_amount": 500.0}]),
+        ("1", "investor1@example.com", [{"fund_id": "f1", "name": "fund1", "investor_id": "1", "subscriptions": [{"subscription_id": "s1", "algo_id": "a1"}], "compounding": 1, "absolute_max_amount": 1000.0}, {"fund_id": "f2", "name": "fund2", "investor_id": "1", "subscriptions": [{"subscription_id": "s2", "algo_id": "a2"}, {"subscription_id": "s3", "algo_id": "a3"}], "compounding": "false", "absolute_max_amount": 500.0}]),
         ("2", "investor2@example.com", [{"fund_id": "f3", "name": "fund3", "investor_id": "2", "subscriptions": [{"subscription_id": "s4", "algo_id": "a4"}, {"subscription_id": "s5", "algo_id": "a5"}, {"subscription_id": "s6", "algo_id": "a6"}], "compounding": 1}]),
         ("3", "investor3@example.com", [{"fund_id": "f4", "name": "fund4", "investor_id": "3", "subscriptions": [{"subscription_id": "s7", "algo_id": "a7"}], "compounding": 0, "absolute_max_amount": 10000.0}, {"fund_id": "f5", "name": "fund5", "investor_id": "3", "subscriptions": [{"subscription_id": "s8", "algo_id": "a8"}, {"subscription_id": "s9", "algo_id": "a9"}, {"subscription_id": "s10", "algo_id": "a10"}]}])
     ]

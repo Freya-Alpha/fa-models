@@ -13,6 +13,7 @@ class Person(EmbeddedJsonModel):
     family_name: str = Field(index=True, full_text_search=True)
     email: EmailStr = Field(index=True)
     sex: int = Field(index=True)    
+    """0=male, 1=female"""
     nationality_iso3: str = Field(index=True, max_length=3, min_length=3)
     identification_type: Optional[str]
     identification_reference: Optional[str]
