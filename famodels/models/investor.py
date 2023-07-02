@@ -1,11 +1,9 @@
-from datetime import datetime
 import os
 from typing import List, Optional
 from pydantic import EmailStr
 from redis_om import Field, JsonModel, EmbeddedJsonModel
 from redis_om.connections import get_redis_connection
 from famodels.models.person import Person
-import hashlib
 from cryptography.fernet import Fernet
 from hashlib import sha256
 import bcrypt
