@@ -79,6 +79,7 @@ class Investor(JsonModel):
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
     funds: Optional[List[Fund]]
     exchange_keys: Optional[List[ExchangeKey]]
+    priviledge_rank: int = Field(index=True, default=3)
 
     @property
     def passphrase(self):
