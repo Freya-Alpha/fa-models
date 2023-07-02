@@ -127,3 +127,20 @@ def test_investor_funds(investor_id, email, funds):
         assert investor.funds[i].name == funds_objects[i].name
         assert investor.funds[i].compounding == funds_objects[i].compounding
         assert len(investor.funds[i].subscriptions) == len(funds_objects[i].subscriptions)
+
+
+def test_passphrase():
+    # Create an Investor instance
+    person = Person(given_name="john", family_name="Doe", email="john@doe.com", sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    investor = Investor(investor_id='123', email='test@example.com', accountable=person)
+    investor.setPassphrase("testpass")
+    # Check that passphrase can't be retrieved directly
+    with pytest.raises(Exception) as e:
+        print(f"INVOKING IS FORBIDDEN --> {investor.passphrase}")
+    assert str(e.value) == "Cannot retrieve passphrase."
+
+    # Check the passphrase
+    assert investor.verify_passphrase("testpass") is True
+
+    # Check with an incorrect passphrase
+    assert investor.verify_passphrase("wrongpass") is False

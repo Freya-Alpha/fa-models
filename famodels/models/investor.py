@@ -8,6 +8,7 @@ from famodels.models.person import Person
 import hashlib
 from cryptography.fernet import Fernet
 from hashlib import sha256
+import bcrypt
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
@@ -16,10 +17,11 @@ print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 key = os.environ.get("ENCRYPTION_KEY").encode()
 ENCRYPTION_KEY = urlsafe_b64encode(sha256(key).digest())
 
+SALT = os.environ.get("SALT")
+
 class Subscription(EmbeddedJsonModel):
     subscription_id: str = Field(index=False)
     algo_id:str = Field(index=True)
-    
     class Meta:
         # global_key_prefix="fa-investor-processing"
         model_key_prefix="subscription"
@@ -77,23 +79,26 @@ class Investor(JsonModel):
     investor_id: str = Field(index=True)
     email: EmailStr = Field(index=True)
     accountable: Person = Field(index=True)        
-    _passphrase: str = Field(index=False)
+    _passphrase: Optional[str]
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
     # funds: Optional[List[Fund]]
     exchange_keys: Optional[List[ExchangeKey]]
 
-    # @property
-    # def passphrase(self):
-    #     raise Exception("Cannot retrieve passphrase.")
-        
-    # @passphrase.setter
-    # def passphrase(self, value):
-    #     hashed_value = hashlib.sha256(value.encode()).hexdigest()
-    #     self._passphrase = hashed_value
+    @property
+    def passphrase(self):
+        raise Exception("Cannot retrieve passphrase.")
+    
+    def setPassphrase(self, passphrase:str):
+        """Use this method to set a password. The pydantic setter method does not work with JsonModel."""
+        encoded_pw = passphrase.encode()
+        # Adding the salt to prefent Rainbow Table Attacks and avoiding to hash the same password with the same hash.
+        # DO NOT USE A STATIC SALT!
+        salt = bcrypt.gensalt()
+        self._passphrase = bcrypt.hashpw(encoded_pw, salt)
 
-    # def verify_passphrase(self, value):
-    #     return self._passphrase == hashlib.sha256(value.encode()).hexdigest()
-
+    def verify_passphrase(self, passphrase: str):
+        return bcrypt.checkpw(passphrase.encode(), self._passphrase)    
+    
     class Meta:
         # global_key_prefix="fa-investor-processing"
         model_key_prefix="investor"
