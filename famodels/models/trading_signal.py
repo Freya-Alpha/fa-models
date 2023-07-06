@@ -7,6 +7,15 @@ from famodels.models.side import Side
 from redis_om import Migrator
 from redis_om import (Field, JsonModel)
 from redis_om.connections import get_redis_connection
+from enum import Enum
+
+class StateOfSignal(str, Enum):    
+    """Describing the possible states of a Signal (not a Trade). """
+    SUBMITTED = "submitted"
+    ERRONEOUS = "erroneous"   
+    REJECTED = "rejected"
+    QUALIFIED = "qualified"
+    EXECUTED = "executed"
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")

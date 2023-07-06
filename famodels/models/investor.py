@@ -3,12 +3,22 @@ from typing import List, Optional
 from pydantic import EmailStr
 from redis_om import Field, JsonModel, EmbeddedJsonModel
 from redis_om.connections import get_redis_connection
-from famodels.models.state_of_investor import StateOfInvestor
 from famodels.models.person import Person
 from cryptography.fernet import Fernet
 from hashlib import sha256
 import bcrypt
-from base64 import urlsafe_b64encode, urlsafe_b64decode
+from base64 import urlsafe_b64encode
+
+from enum import Enum
+
+class StateOfInvestor(str, Enum):    
+    """Describing the possible states of an Investor. Keep it simple. Also, we added the str to inherit from, so that the ENUM is serializable.         """
+    REGISTERED = "registered"
+    """When an investor is merely registered, but NOT authenticated with an official document. Registered allows cold trading."""
+    QUALIFIED = "qualified"
+    """When an investor is identified and authenticated by an offical document and qualified for hot trades. This is the highest state."""
+    BANNED = "banned"
+    """The investor was deliberatly banned from the system."""
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
@@ -17,7 +27,7 @@ key = os.environ.get("ENCRYPTION_KEY").encode()
 ENCRYPTION_KEY = urlsafe_b64encode(sha256(key).digest())
 
 class Subscription(EmbeddedJsonModel):
-    subscription_id: str = Field(index=False)
+    id: str = Field(index=False)
     algo_id:str = Field(index=True)
     class Meta:
         # global_key_prefix="fa-investor-processing"
@@ -25,12 +35,14 @@ class Subscription(EmbeddedJsonModel):
         database = get_redis_connection(url=REDIS_OM_URL, decode_responses=True)
 
 class Fund(EmbeddedJsonModel):
-    fund_id:str = Field(index=True)
+    id:str = Field(index=True)
     name:str = Field(index=True)    
     compounding: str = Field(index=True, default="true")
     """Marks the investment as to be compounded with every trade. CAUTION: Due to redis-om model restrictions this could not be a boolean as it's value suggests. The workaround is a str with values 'true' and 'false'. Default is 'true'. Will bechanged as soon the redis-om library has enhanced."""
     subscriptions: Optional[List[Subscription]]  
-    absolute_max_amount: Optional[float]
+    number_of_positions: int = Field(index=False, default=5)
+    max_amount: Optional[float]
+    """The max amount in quote currency to invest. e.g. 10'000 (USDT)."""
     
     class Meta:
         # global_key_prefix="fa-investor-processing"
@@ -55,7 +67,7 @@ class EncryptionService:
         return f.decrypt(encrypted_value.encode()).decode()
 
 class ExchangeKey(EmbeddedJsonModel):
-    exchange: str = Field(index=True)
+    exchange: str = Field(index=True,)
     key_id: str = Field(index=True)
     _key_secret: str = Field(index=False)
 
@@ -71,7 +83,7 @@ class ExchangeKey(EmbeddedJsonModel):
 
 
 class Investor(JsonModel):
-    investor_id: str = Field(index=True)
+    id: str = Field(index=True)
     email: EmailStr = Field(index=True)
     accountable: Person = Field(index=True)        
     state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
@@ -96,6 +108,9 @@ class Investor(JsonModel):
 
     def verify_passphrase(self, passphrase: str):
         return bcrypt.checkpw(passphrase.encode(), self._passphrase)    
+    
+    def is_qualified(self):
+        return self.state == StateOfInvestor.QUALIFIED
     
     class Meta:
         # global_key_prefix="fa-investor-processing"

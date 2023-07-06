@@ -28,7 +28,7 @@ def setup_redis():
 def test_investor_model():
     # Now we can create an instance of `Investor` without connecting to a real Redis server
     person = Person(given_name="john", family_name="Doe", email="john@doe.com", sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
-    investor = Investor(investor_id='123', email='test@example.com', accountable=person)    
+    investor = Investor(id='123', email='test@example.com', accountable=person)    
 
 
 @pytest.mark.parametrize(
@@ -103,9 +103,9 @@ def test_exchange_key(exchange, key_id, key_secret):
 @pytest.mark.parametrize(
     "investor_id, email, funds",
     [
-        ("1", "investor1@example.com", [{"fund_id": "f1", "name": "fund1", "investor_id": "1", "subscriptions": [{"subscription_id": "s1", "algo_id": "a1"}], "compounding": 1, "absolute_max_amount": 1000.0}, {"fund_id": "f2", "name": "fund2", "investor_id": "1", "subscriptions": [{"subscription_id": "s2", "algo_id": "a2"}, {"subscription_id": "s3", "algo_id": "a3"}], "compounding": "false", "absolute_max_amount": 500.0}]),
-        ("2", "investor2@example.com", [{"fund_id": "f3", "name": "fund3", "investor_id": "2", "subscriptions": [{"subscription_id": "s4", "algo_id": "a4"}, {"subscription_id": "s5", "algo_id": "a5"}, {"subscription_id": "s6", "algo_id": "a6"}], "compounding": 1}]),
-        ("3", "investor3@example.com", [{"fund_id": "f4", "name": "fund4", "investor_id": "3", "subscriptions": [{"subscription_id": "s7", "algo_id": "a7"}], "compounding": 0, "absolute_max_amount": 10000.0}, {"fund_id": "f5", "name": "fund5", "investor_id": "3", "subscriptions": [{"subscription_id": "s8", "algo_id": "a8"}, {"subscription_id": "s9", "algo_id": "a9"}, {"subscription_id": "s10", "algo_id": "a10"}]}])
+        ("1", "investor1@example.com", [{"id": "f1", "name": "fund1", "investor_id": "1", "subscriptions": [{"id": "s1", "algo_id": "a1"}], "compounding": 1, "absolute_max_amount": 1000.0}, {"id": "f2", "name": "fund2", "investor_id": "1", "subscriptions": [{"id": "s2", "algo_id": "a2"}, {"id": "s3", "algo_id": "a3"}], "compounding": "false", "absolute_max_amount": 500.0}]),
+        ("2", "investor2@example.com", [{"id": "f3", "name": "fund3", "investor_id": "2", "subscriptions": [{"id": "s4", "algo_id": "a4"}, {"id": "s5", "algo_id": "a5"}, {"id": "s6", "algo_id": "a6"}], "compounding": 1}]),
+        ("3", "investor3@example.com", [{"id": "f4", "name": "fund4", "investor_id": "3", "subscriptions": [{"id": "s7", "algo_id": "a7"}], "compounding": 0, "absolute_max_amount": 10000.0}, {"id": "f5", "name": "fund5", "investor_id": "3", "subscriptions": [{"id": "s8", "algo_id": "a8"}, {"id": "s9", "algo_id": "a9"}, {"id": "s10", "algo_id": "a10"}]}])
     ]
 )
 def test_investor_funds(investor_id, email, funds):
@@ -117,13 +117,13 @@ def test_investor_funds(investor_id, email, funds):
         fund_obj = Fund(subscriptions=subscriptions, **fund)
         funds_objects.append(fund_obj)
 
-    investor = Investor(investor_id=investor_id, email=email, accountable=person, funds=funds_objects)
+    investor = Investor(id=investor_id, email=email, accountable=person, funds=funds_objects)
 
-    assert investor.investor_id == investor_id
+    assert investor.id == investor_id
     assert investor.email == email
     assert len(investor.funds) == len(funds_objects)
     for i in range(len(funds_objects)):
-        assert investor.funds[i].fund_id == funds_objects[i].fund_id
+        assert investor.funds[i].id == funds_objects[i].id
         assert investor.funds[i].name == funds_objects[i].name
         assert investor.funds[i].compounding == funds_objects[i].compounding
         assert len(investor.funds[i].subscriptions) == len(funds_objects[i].subscriptions)
@@ -132,7 +132,7 @@ def test_investor_funds(investor_id, email, funds):
 def test_passphrase():
     # Create an Investor instance
     person = Person(given_name="john", family_name="Doe", email="john@doe.com", sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
-    investor = Investor(investor_id='123', email='test@example.com', accountable=person)
+    investor = Investor(id='123', email='test@example.com', accountable=person)
     investor.setPassphrase("testpass")
     # Check that passphrase can't be retrieved directly
     with pytest.raises(Exception) as e:
