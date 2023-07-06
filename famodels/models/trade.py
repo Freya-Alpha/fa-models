@@ -28,7 +28,7 @@ class Trade(JsonModel):
     """A trade in our system is composed of a buy and a sell order. Do not mistaken it for a trade from the CEX.
         Create a new Trade record for every update and correlate them with trade_id. See attribute #trade_id"""   
     # id: Optional[int] = Field(default=None, primary_key=True)    
-    id: str = Field(default=str(uuid.uuid4().hex), nullable=False, primary_key=True)
+    id: str = Field(primary_key=True)
     # sort_index:int = field(init=False, repr=False)
     #trade_id: Optional[str] = Field(default=uuid.uuid4(), primary_key=True)
     """The trade id is the reference that keeps the state updates correlated. It will generate a UUID by default.
@@ -38,7 +38,7 @@ class Trade(JsonModel):
     fund_id: str = Field(index=True)
     pos_idx:int
     market:str = Field(index=True)    
-    status:StateOfTrade = Field(index=True)
+    status:StateOfTrade = Field(index=True, default=StateOfTrade.NEW)
     direction:Direction
     amount: float
     time_of_initiation:datetime = Field(index=True, default=int(time.time() * 1000))

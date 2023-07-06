@@ -1,5 +1,4 @@
 from typing import List, Set, Optional
-from famodels.models.state_of_trade import StateOfTrade
 from famodels.models.direction import Direction
 from famodels.models.order_type import OrderType
 from famodels.models.side import Side

@@ -1,4 +1,5 @@
 import os
+import time
 from typing import List, Optional
 from pydantic import EmailStr
 from redis_om import Field, JsonModel, EmbeddedJsonModel
@@ -29,6 +30,10 @@ ENCRYPTION_KEY = urlsafe_b64encode(sha256(key).digest())
 class Subscription(EmbeddedJsonModel):
     id: str = Field(index=False)
     algo_id:str = Field(index=True)
+    # redis model can only store these fields of the embedded json model as string
+    start_timestamp:str = Field(index=True, default=int(time.time() * 1000))
+    stop_timestamp: Optional[str]
+
     class Meta:
         # global_key_prefix="fa-investor-processing"
         model_key_prefix="subscription"
@@ -84,6 +89,8 @@ class ExchangeKey(EmbeddedJsonModel):
 
 class Investor(JsonModel):
     id: str = Field(index=True)
+    name: str = Field(index=True, full_text_search=True)
+    """company name or givenname & family name"""
     email: EmailStr = Field(index=True)
     accountable: Person = Field(index=True)        
     state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
