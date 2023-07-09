@@ -31,7 +31,7 @@ class Subscription(EmbeddedJsonModel):
     id: str = Field(index=False)
     algo_id:str = Field(index=True)
     # redis model can only store these fields of the embedded json model as string
-    start_timestamp:str = Field(index=True, default=int(time.time() * 1000))
+    start_timestamp:Optional[str]
     stop_timestamp: Optional[str]
 
     class Meta:
