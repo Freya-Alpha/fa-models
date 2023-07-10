@@ -15,6 +15,7 @@ class InvestorStatement(JsonModel):
     invested_assets_valued_in_quote: float = Field(index=True, default=0)
     """All the available assets - except the cash/quote currency - valued in quote currency (USDT)."""
     total_assets_value = float = (Field(index=True, default=0))
+    total_assets_value = float = (Field(index=True, default=0))
     """Total values of invested assets + available cash = total_assets_value"""
 
     class Meta:

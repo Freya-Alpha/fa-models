@@ -26,8 +26,8 @@ def setup_redis():
 
 
 def test_investor_model():
-    # Now we can create an instance of `Investor` without connecting to a real Redis server
-    person = Person(given_name="john", family_name="Doe", email="john@doe.com", sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    """Simple test if we can create a Investor model."""
+    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
     investor = Investor(id='123', name="Jonathans Investements Ltd", email='test@example.com', accountable=person)    
 
 
@@ -47,7 +47,7 @@ def test_negative_person(email, nationality_iso3, country_of_residence_iso3):
             given_name="john",
             family_name="Doe",
             email=email,
-            sex=0,
+            gender="f",
             nationality_iso3=nationality_iso3,
             country_of_residence_iso3=country_of_residence_iso3,
             phone="+43 681 11 24",
@@ -69,7 +69,7 @@ def test_positive_person(email, nationality_iso3, country_of_residence_iso3):
             given_name="john",
             family_name="Doe",
             email=email,
-            sex=0,
+            gender="f",
             nationality_iso3=nationality_iso3,
             country_of_residence_iso3=country_of_residence_iso3,
             phone="+43 681 11 24",
@@ -109,7 +109,7 @@ def test_exchange_key(exchange, key_id, key_secret):
     ]
 )
 def test_investor_funds(investor_id, name, email, funds):
-    person = Person(given_name="john", family_name="Doe", email=email, sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    person = Person(given_name="john", family_name="Doe", email=email, gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
 
     funds_objects = []
     for fund in funds:
@@ -132,7 +132,7 @@ def test_investor_funds(investor_id, name, email, funds):
 
 def test_passphrase():
     # Create an Investor instance
-    person = Person(given_name="john", family_name="Doe", email="john@doe.com", sex=0, nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
     investor = Investor(id='123', name="Johnny's Investments", email='test@example.com', accountable=person)
     investor.setPassphrase("testpass")
     # Check that passphrase can't be retrieved directly

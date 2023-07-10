@@ -38,7 +38,7 @@ class Trade(JsonModel):
     fund_id: str = Field(index=True)
     pos_idx:int
     market:str = Field(index=True)    
-    status:StateOfTrade = Field(index=True, default=StateOfTrade.NEW)
+    state:StateOfTrade = Field(index=True, default=StateOfTrade.NEW)
     direction:Direction
     amount: float
     time_of_initiation:datetime = Field(index=True, default=int(time.time() * 1000))
