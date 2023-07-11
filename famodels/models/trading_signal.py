@@ -51,8 +51,11 @@ class TradingSignal(JsonModel):
     """Take-profit in absolute price."""
     sl: float
     """Stop-loss in absolute price."""
-    position_size_of_investment: float = 100
-    """Percentage of the investment position this algortihm is allowed to trade. Default is 100%, which is 1 position."""  
+    position_size_in_percentage: float = 100
+    """Percentage of the trade position this algortihm is allowed to trade. 
+    Default is 100%, which is 1 position of your fund's positions.
+    Another number than 100, will assume this provider-trade has multiple positions. 
+    If a signal provider has one partial position open and then closes it, it will also regard the trade as fully closed."""  
     # datatime.datetime would be fully serializable in REDIS. 
     # https://www.youtube.com/watch?v=ZP2j7bmWfmU
     timestamp_of_creation: int = Field(index=True)

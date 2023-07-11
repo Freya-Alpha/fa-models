@@ -36,7 +36,7 @@ class Trade(JsonModel):
         provided to create the correlation.)"""
     investor_id: str = Field(index=True)
     fund_id: str = Field(index=True)
-    pos_idx:int
+    fund_pos_idx:int
     market:str = Field(index=True)    
     state:StateOfTrade = Field(index=True, default=StateOfTrade.NEW)
     direction:Direction
