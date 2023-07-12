@@ -45,9 +45,19 @@ class Fund(EmbeddedJsonModel):
     compounding: str = Field(index=True, default="true")
     """Marks the investment as to be compounded with every trade. CAUTION: Due to redis-om model restrictions this could not be a boolean as it's value suggests. The workaround is a str with values 'true' and 'false'. Default is 'true'. Will bechanged as soon the redis-om library has enhanced."""
     subscriptions: Optional[List[Subscription]]  
+    investment_ratio: float = Field(index=False, default=None)
+    """ The ratio of the total assets this investment can manage. It is a number between 1 and 0. 
+        The ratio-balancer will consume this value, the total assets, the fixed_max_amount to compute the max_amount.
+    None means: as much as one can."""
     number_of_positions: int = Field(index=False, default=5)
+    """ Number of positions this fund allows. 
+        Do not mistaken it for trade-positions, a signal provider uses to scale-in and out on positions with a shared TP/SL."""
+    fixed_max_amount: float = Field(index=False, default=None)
+    """This can be optional set by the investor. The max_amount can NEVER be higher than the fixed_max_amount."""
     max_amount: Optional[float]
-    """The max amount in quote currency to invest. e.g. 10'000 (USDT)."""
+    """The max amount in quote currency to invest. e.g. 10'000 (USDT)
+    It is computed possible in real time by the ratio-balancer triggered by events like: new or deleted funds, closed orders, investor statements, depositing money, withdrawing money, change of fixed_max_amount.
+    """
     
     class Meta:
         # global_key_prefix="fa-investor-processing"
