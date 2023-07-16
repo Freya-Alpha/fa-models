@@ -20,6 +20,9 @@ class StateOfInvestor(str, Enum):
     """When an investor is identified and authenticated by an offical document and qualified for hot trades. This is the highest state."""
     BANNED = "banned"
     """The investor was deliberatly banned from the system."""
+    DELETED = "deleted"
+    """ This investor is flagged for deletion."""
+
 
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
