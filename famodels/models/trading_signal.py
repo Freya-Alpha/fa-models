@@ -31,8 +31,8 @@ class TradingSignal(JsonModel):
     #Do not mistaken this correlation id with the trade correlation id."""    
     provider_trade_id: str = Field(index=True)
     """ FA Models describes a Trade as a buy and a sell (not soley a buy or a sell). 
-        Every trade is expected to consist of at least one buy order and zero or more sell orders. 
-        Thus, the provider_trade_id is mandatory if a provider wants to scale in and out on positions. 
+        Every trade is expected to consist of at least one buy order and at least one sell order. 
+        Thus, the provider_trade_id is mandatory if a provider wants to scale in and out on a fund-position. This will create a multi-position-trade.
         E.g. one can send one long signal with a provider_trade_id 77 and another long signal a few hours later also with the provider_trade_id 77. 
         Provided that the position_size_in_percentage is less than 100 on the first one.
         All updates provided by the system will hold the trade id."""    
@@ -55,9 +55,12 @@ class TradingSignal(JsonModel):
     sl: float
     """Stop-loss in absolute price."""
     position_size_in_percentage: float = 100
-    """Percentage of the trade position this algortihm is allowed to trade. 
+    """ Caution, if one chooses another value than 100, the system will create a multi-position-trade (for scaling-in and scaling-out on a trade).
+    In addition, one has to provide a provider_trade_id in order for the system to create a multi-position-trade. 
+    Any consecutive trades (scale-in/out), need to have provide the same provider_trade_id.
+    Percentage of the trade position this algortihm is allowed to trade. 
     Default is 100%, which is 1 position of your fund's positions.
-    Another number than 100, will assume this provider-trade has multiple positions. 
+    Another number than 100, will assume this trade has multiple positions. 
     If a signal provider has one partial position open and then closes it, it will also regard the trade as fully closed."""  
     # datatime.datetime would be fully serializable in REDIS. 
     # https://www.youtube.com/watch?v=ZP2j7bmWfmU

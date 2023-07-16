@@ -44,19 +44,22 @@ class Order(EmbeddedJsonModel):
     id: str = Field(index=True)
     signal_id: str = Field(index=True)
     algo_id: str = Field(index=True)
-    trade_id: str = Field(index=True)
+    # trade_id: str = Field(index=True)
     state: StateOfOrder = Field(index=True, default=StateOfOrder.NEW)
+    """A order that is marked as new, needs a mirrored order created on the exchange."""
     order_type: OrderType = Field(index=True, default=OrderType.LIMIT)        
     market: str = Field(index=True)
     exchange: str = Field(index=True)
     direction: Direction = Field(index=True)
     side: Side = Field(index=True)
     price: float
-    amount: float    
-    account: str = Field(index=True)
-    pos_idx: int = Field(index=True)
+    amount: float = Field(index=True)
+    tp: float
+    sl: float
+    # account: str = Field(index=True)
+    # pos_idx: int = Field(index=True)
     timestamp_of_order: int = Field(index=True)
-    comission: float    
+    # comission: float    
 
     class Meta:
         # global_key_prefix="order-and-trade-processing"
@@ -94,6 +97,11 @@ class Trade(JsonModel):
         Use this for the first record you insert. Inserting updated records (new records should then have the trade_id
         provided to create the correlation.)"""
     investor_id: str = Field(index=True)
+    provider_id: str = Field(index=True)
+    provider_trade_id: Optional[str] = Field(index=False)
+    """ This id can be sent optionally (together with position_size_in_percent) by the signal provider to make this a multi-position-trade.
+        CAUTION: This trade id has to be unique for each multi-position-trade one is attempting to run.
+    """
     fund_id: str = Field(index=True)
     fund_pos_idx:int
     """ This is one position of the fund. Which can consist of extra partial/scaled orders, if a provider_trade_id is supplied.
