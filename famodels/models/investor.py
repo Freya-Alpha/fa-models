@@ -105,6 +105,7 @@ class Investor(JsonModel):
     name: str = Field(index=True, full_text_search=True)
     """company name or givenname & family name"""
     email: EmailStr = Field(index=True)
+    is_company: int
     accountable: Person = Field(index=True)        
     state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
     _passphrase: Optional[str]
