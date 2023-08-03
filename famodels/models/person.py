@@ -9,16 +9,17 @@ REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
 class Person(EmbeddedJsonModel):    
-    given_name: str = Field(index=True)
-    family_name: str = Field(index=True, full_text_search=True)
-    email: EmailStr = Field(index=True)
-    gender: str = Field(index=True, max_length=1)    
-    """m or f"""
-    nationality_iso3: str = Field(index=True, max_length=3, min_length=3)
+    given_name: Optional[str] = Field(index=True)
+    family_name: Optional[str] = Field(index=True, full_text_search=True)
+    email: Optional[EmailStr] = Field(index=True)
+    gender: str = Field(index=True, max_length=2, default="na")    
+    """m, f, na"""
+    nationality_iso2: str = Field(index=True, max_length=2, min_length=2)
     identification_type: Optional[str]
     identification_reference: Optional[str]
-    country_of_residence_iso3: str = Field(index=True, max_length=3, min_length=3)
-    phone: str = Field(index=True)
+    country_of_residence_iso2: str = Field(index=True, max_length=2, min_length=2)
+    phone: Optional[str] = Field(index=True, default="")
+    timestamp: Optional[datetime]
     
     class Meta:
         # global_key_prefix=""

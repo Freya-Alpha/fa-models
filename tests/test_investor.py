@@ -27,51 +27,51 @@ def setup_redis():
 
 def test_investor_model():
     """Simple test if we can create a Investor model."""
-    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
     investor = Investor(id='123', name="Jonathans Investements Ltd", email='test@example.com', accountable=person)    
 
 
 @pytest.mark.parametrize(
-    "email, nationality_iso3, country_of_residence_iso3",
+    "email, nationality_iso2, country_of_residence_iso2",
     [
-        ("invalidemail", "GBR", "IRE"),  # invalid email
-        ("john@doe.com", "GB", "IRE"),  # invalid nationality_iso3
-        ("john@doe.com", "GBR", "IR"),  # invalid country_of_residence_iso3
-        ("john@doe.com", "GBRRA", "IRE"),  # invalid nationality_iso3
-        ("john@doe.com", "GBR", "IRELA"),  # invalid country_of_residence_iso3
+        ("invalidemail", "UK", "IRE"),  # invalid email
+        ("john@doe.com", "GB", "IRE"),  # invalid nationality_iso2
+        ("john@doe.com", "UKI", "IR"),  # invalid country_of_residence_iso2
+        ("john@doe.com", "UKRA", "IRE"),  # invalid nationality_iso2
+        ("john@doe.com", "UK", "IRELA"),  # invalid country_of_residence_iso2
     ],
 )
-def test_negative_person(email, nationality_iso3, country_of_residence_iso3):
+def test_negative_person(email, nationality_iso2, country_of_residence_iso2):
     with pytest.raises(ValidationError):
         Person(
             given_name="john",
             family_name="Doe",
             email=email,
             gender="f",
-            nationality_iso3=nationality_iso3,
-            country_of_residence_iso3=country_of_residence_iso3,
+            nationality_iso2=nationality_iso2,
+            country_of_residence_iso2=country_of_residence_iso2,
             phone="+43 681 11 24",
         )
 
 @pytest.mark.parametrize(
-    "email, nationality_iso3, country_of_residence_iso3",
+    "email, nationality_iso2, country_of_residence_iso2",
     [
-        ("john.doe+test@domain.com", "GBR", "IRE"),  # valid email with plus addressing and country codes
-        ("jane-doe@sub.domain.com", "USA", "CAN"),  # valid email with hyphen and subdomain
-        ("bob_smith@edu.domain.ac.uk", "AUS", "NZL"),  # valid email with underscore and multiple domain levels
-        ("alice.johnson@long-domain-name.com", "IND", "GBR"),  # valid email with long domain name
-        ("charles-brown@domain.io", "BRA", "ARG"),  # valid email with country code top-level domain (ccTLD)
+        ("john.doe+test@domain.com", "UK", "IR"),  # valid email with plus addressing and country codes
+        ("jane-doe@sub.domain.com", "US", "CA"),  # valid email with hyphen and subdomain
+        ("bob_smith@edu.domain.ac.uk", "AU", "NZ"),  # valid email with underscore and multiple domain levels
+        ("alice.johnson@long-domain-name.com", "IN", "UK"),  # valid email with long domain name
+        ("charles-brown@domain.io", "BR", "AR"),  # valid email with country code top-level domain (ccTLD)
     ],
 )
-def test_positive_person(email, nationality_iso3, country_of_residence_iso3):
+def test_positive_person(email, nationality_iso2, country_of_residence_iso2):
     try:
         Person(
             given_name="john",
             family_name="Doe",
             email=email,
             gender="f",
-            nationality_iso3=nationality_iso3,
-            country_of_residence_iso3=country_of_residence_iso3,
+            nationality_iso2=nationality_iso2,
+            country_of_residence_iso2=country_of_residence_iso2,
             phone="+43 681 11 24",
         )
     except ValidationError:
@@ -109,7 +109,7 @@ def test_exchange_key(exchange, key_id, key_secret):
     ]
 )
 def test_investor_funds(investor_id, name, email, funds):
-    person = Person(given_name="john", family_name="Doe", email=email, gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    person = Person(given_name="john", family_name="Doe", email=email, gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
 
     funds_objects = []
     for fund in funds:
@@ -132,7 +132,7 @@ def test_investor_funds(investor_id, name, email, funds):
 
 def test_passphrase():
     # Create an Investor instance
-    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso3="GBR", country_of_residence_iso3="IRE", phone="+43 681 11 24")
+    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
     investor = Investor(id='123', name="Johnny's Investments", email='test@example.com', accountable=person)
     investor.setPassphrase("testpass")
     # Check that passphrase can't be retrieved directly

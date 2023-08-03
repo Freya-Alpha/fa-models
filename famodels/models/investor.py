@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import time
 from typing import List, Optional
@@ -101,12 +102,13 @@ class ExchangeKey(EmbeddedJsonModel):
 
 
 class Investor(JsonModel):
-    id: str = Field(index=True)
-    name: str = Field(index=True, full_text_search=True)
-    """company name or givenname & family name"""
+    id: Optional[str]
+    name: str = Field(index=True, full_text_search=True, default="")
+    """company name or full private name"""
     email: EmailStr = Field(index=True)
-    is_company: int
-    accountable: Person = Field(index=True)        
+    is_company: int = Field(index=True, default=0)
+    accountable: Optional[Person] #= Field(index=True) # cannot be optional, otherwise, we need to send full person data on creation-time.      
+    """Mandatory, if it is a company."""
     state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
     _passphrase: Optional[str]
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
@@ -114,6 +116,8 @@ class Investor(JsonModel):
     exchange_keys: Optional[List[ExchangeKey]]
     priviledge_rank: int = Field(index=True, default=1, sortable=True)
     """The higher the value, the higher the priviledge."""
+    timestamp: Optional[datetime]
+    """Record, when this record was created. Needs to be determined by the business logic, not by the data logic."""    
 
     @property
     def passphrase(self):
@@ -121,14 +125,19 @@ class Investor(JsonModel):
     
     def setPassphrase(self, passphrase:str):
         """Use this method to set a password. The pydantic setter method does not work with JsonModel."""
-        encoded_pw = passphrase.encode()
+        if isinstance(passphrase, str):
+            passphrase = passphrase.encode()
         # Adding the salt to prefent Rainbow Table Attacks and avoiding to hash the same password with the same hash.
         # DO NOT USE A STATIC SALT!
         salt = bcrypt.gensalt()
-        self._passphrase = bcrypt.hashpw(encoded_pw, salt)
+        self._passphrase = bcrypt.hashpw(passphrase, salt)
 
     def verify_passphrase(self, passphrase: str):
-        return bcrypt.checkpw(passphrase.encode(), self._passphrase)    
+        print(f"TYPE: {type(passphrase)}")
+        if isinstance(passphrase, str):
+            passphrase = passphrase.encode()
+        encoded_passphrase = self._passphrase.encode() if isinstance(self._passphrase, str) else self._passphrase
+        return bcrypt.checkpw(passphrase, encoded_passphrase)    
     
     def is_qualified(self):
         return self.state == StateOfInvestor.QUALIFIED
