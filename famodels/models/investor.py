@@ -133,7 +133,6 @@ class Investor(JsonModel):
         self._passphrase = bcrypt.hashpw(passphrase, salt)
 
     def verify_passphrase(self, passphrase: str):
-        print(f"TYPE: {type(passphrase)}")
         if isinstance(passphrase, str):
             passphrase = passphrase.encode()
         encoded_passphrase = self._passphrase.encode() if isinstance(self._passphrase, str) else self._passphrase
