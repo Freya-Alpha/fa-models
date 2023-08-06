@@ -18,6 +18,11 @@ class Person(EmbeddedJsonModel):
     identification_type: Optional[str]
     identification_reference: Optional[str]
     country_of_residence_iso2: str = Field(index=True, max_length=2, min_length=2)
+    building_address: Optional[str] = Field(index=True) 
+    street_address: Optional[str] = Field(index=True)
+    city: Optional[str] = Field(index=True)
+    zip: Optional[str] = Field(index=True)
+    province: Optional[str] = Field(index=True)
     phone: Optional[str] = Field(index=True, default="")
     timestamp: Optional[datetime]
     

@@ -10,7 +10,6 @@ from cryptography.fernet import Fernet
 from hashlib import sha256
 import bcrypt
 from base64 import urlsafe_b64encode
-
 from enum import Enum
 
 class StateOfInvestor(str, Enum):    
@@ -102,7 +101,7 @@ class ExchangeKey(EmbeddedJsonModel):
 
 
 class Investor(JsonModel):
-    id: Optional[str]
+    id: str = Field(index=True)
     name: str = Field(index=True, full_text_search=True, default="")
     """company name or full private name"""
     email: EmailStr = Field(index=True)
@@ -110,6 +109,7 @@ class Investor(JsonModel):
     accountable: Optional[Person] #= Field(index=True) # cannot be optional, otherwise, we need to send full person data on creation-time.      
     """Mandatory, if it is a company."""
     state: StateOfInvestor = Field(index=True, default=StateOfInvestor.REGISTERED.value)
+    # credential: Credential = Field(index=False)
     _passphrase: Optional[str]
     #library constraint: "redis_om.model.model.RedisModelError: In this Preview release, list and tuple fields can only contain strings. Problem field: compounding"
     funds: Optional[List[Fund]]
