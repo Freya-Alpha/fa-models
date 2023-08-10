@@ -116,14 +116,22 @@ class Investor(JsonModel):
     exchange_keys: Optional[List[ExchangeKey]]
     priviledge_rank: int = Field(index=True, default=1, sortable=True)
     """The higher the value, the higher the priviledge."""
-    timestamp: Optional[datetime]
+    timestamp: Optional[int] = Field(index=True, sortable=True)
     """Record, when this record was created. Needs to be determined by the business logic, not by the data logic."""    
 
     @property
     def passphrase(self):
         raise Exception("Cannot retrieve passphrase.")
     
-    def setPassphrase(self, passphrase:str):
+    def get_encrypted_passphrase(self):
+        """Return the password, but not encrypted. Use verify_password to check passwords."""
+        return self._passphrase
+
+    def set_encrypted_password(self, encrypted_password:str):
+        """Only use this function to set an already encrypted password. E.g. for field-copying actions."""
+        self._passphrase = encrypted_password
+    
+    def set_passphrase(self, passphrase:str):
         """Use this method to set a password. The pydantic setter method does not work with JsonModel."""
         if isinstance(passphrase, str):
             passphrase = passphrase.encode()

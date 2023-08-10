@@ -134,7 +134,7 @@ def test_passphrase():
     # Create an Investor instance
     person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
     investor = Investor(id='123', name="Johnny's Investments", email='test@example.com', accountable=person)
-    investor.setPassphrase("testpass")
+    investor.set_passphrase("testpass")
     # Check that passphrase can't be retrieved directly
     with pytest.raises(Exception) as e:
         print(f"INVOKING IS FORBIDDEN --> {investor.passphrase}")
