@@ -27,7 +27,7 @@ class StateOfInvestor(str, Enum):
 REDIS_OM_URL = os.environ.get("REDIS_OM_URL")
 print(f"The env-var REDIS_OM_URL is: {REDIS_OM_URL}")
 
-key = os.environ.get("ENCRYPTION_KEY").encode()
+key = os.getenv("ENCRYPTION_KEY","my_value").encode()
 ENCRYPTION_KEY = urlsafe_b64encode(sha256(key).digest())
 
 class Subscription(EmbeddedJsonModel):

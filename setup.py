@@ -27,6 +27,7 @@ setup(
     packages=find_packages(include=['famodels', 
                                     'famodels.models', 
                                     'famodels.models.market',
+                                    'famodels.models.exchange',
                                     'famodels.models.db_independent'
                                     ], exclude=['tests*']),
     # packages=['famodels'],
