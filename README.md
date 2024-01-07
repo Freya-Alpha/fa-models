@@ -1,5 +1,5 @@
 # fa-models
-A set of models often used for trading services. The library offers merely models, tests and data and schema generators. The Schemas Generator offers to translate the models to Avro Schemas written in JSON.
+A set of models often used for trading services. The library offers merely models and is database agnostic.
 
 ## Sponsors
 Freya Alpha,
