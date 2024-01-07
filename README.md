@@ -68,6 +68,8 @@ In order to use your own version of the project - to maybe contribute to the lib
 
 Simply commit and push into MAIN. Make sure you have tested well.
 
+Github Actions (.github/workflows/testing_and_deployment.yml) will deploy the file to pypi.org.
+
 -----
 
 Delete any old files in the /dist and build folder of your local environment.
