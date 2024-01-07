@@ -1,6 +1,6 @@
 from typing import List, Optional
-from trading_signal import TradingSignal
-from status_of_signal import StatusOfSignal
+from famodels.trading_signal import TradingSignal
+from famodels.status_of_signal import StatusOfSignal
 from pydantic import Field
 
 class ProcessedSignal(TradingSignal):

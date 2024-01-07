@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 
-class StatusOfAlgorithm(str, Enum):
+class StatusOfStrategy(str, Enum):
     """Describing the possible states of an algorithm."""
     REGISTERED = "registered"
     """When an algorithm is freshly registered but has not yet proven performant."""
@@ -12,7 +12,7 @@ class StatusOfAlgorithm(str, Enum):
     BANNED = "banned"
     """The algorithm was banned due to deliberately being banned/blocked from the system. No signals will be allowed - not even for virtual trades."""
 
-class Algorithm(BaseModel):
+class Strategy(BaseModel):
     algo_id: str = Field(...)
     provider_id: str = Field(...)
-    status: StatusOfAlgorithm = Field(default=StatusOfAlgorithm.REGISTERED)
+    status: StatusOfStrategy = Field(default=StatusOfStrategy.REGISTERED)

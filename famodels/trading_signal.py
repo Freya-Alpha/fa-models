@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
-from direction import Direction
-from side import Side
+from famodels.direction import Direction
+from famodels.side import Side
 
 class TradingSignal(BaseModel):
     """
@@ -10,7 +10,7 @@ class TradingSignal(BaseModel):
     (manually or algorithmically). It must have a correlating id to a trade.
     """
     provider_id: str = Field(..., description="The ID of the provider, who emitted the signal.")
-    algo_id: str = Field(..., description="Provide the id of your algorithm id (you might have more than one algorithm), which is sending a signal.")
+    strategy_id: str = Field(..., description="Provide the id of the strategy (you might have more than one algorithm), which is sending a signal.")
     provider_signal_id: Optional[str] = Field(None, description="You can use this correlation id as your own 'signal id' of your internal system. #Do not mistaken this correlation id with the trade correlation id.")
     provider_trade_id: str = Field(..., description="FA Models describes a Trade as a buy and a sell (not soley a buy or a sell). Every trade is expected to consist of at least one buy order and at least one sell order. Thus, the provider_trade_id is mandatory if a provider wants to scale in and out on a fund-position. This will create a multi-position-trade. E.g. one can send one long signal with a provider_trade_id 77 and another long signal a few hours later also with the provider_trade_id 77. Provided that the position_size_in_percentage is less than 100 on the first one. All updates provided by the system will hold the trade id.")
     is_hot_signal: bool = Field(default=True, description="By default, every signal is marked as a cold signal. Thus, set to 0. That is a paper-trading signal and will only be processed for forward-performance testing. Hot signals are suggested to be processed by the order engines - provided all other requirements for hot trading are fulfilled. Set 1 (not true) to this value to suggest a hot trade.")

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import List
-from algorithm import Algorithm
-from person import Person
+from famodels.strategy import Strategy
+from famodels.person import Person
 from enum import Enum
 
 class StatusOfProvider(str, Enum):
@@ -19,7 +19,7 @@ class SignalProvider(BaseModel):
     accountable: Person = Field(...)
     contact: Person = Field(...)
     status: StatusOfProvider = Field(default=StatusOfProvider.NOT_AUTHENTICATED)
-    algorithms: List[Algorithm] = Field(...)
+    algorithms: List[Strategy] = Field(...)
 
     @field_validator('name')
     def validate_name(cls, v):

@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
-from direction import Direction
-from order import Order
+from famodels.direction import Direction
+from famodels.order import Order
 from enum import Enum
 
 class StatusOfTrade(str, Enum):
