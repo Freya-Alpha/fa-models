@@ -14,7 +14,7 @@ Expected to run for Python 3+
 ## Development
 
 ### Testing
-run tests with `pytest -s -vv` to see all the details.
+run tests with `pytest -s -vv` to see all the details. This is extremely important for the library. It could make multiple pods fail.
 
 ### Installation as Consuming Developer
 
