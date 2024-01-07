@@ -66,6 +66,10 @@ In order to use your own version of the project - to maybe contribute to the lib
 
 ## Releasing a new version
 
+Simply commit and push into MAIN. Make sure you have tested well.
+
+-----
+
 Delete any old files in the /dist and build folder of your local environment.
 Update your pip: 
 ```
