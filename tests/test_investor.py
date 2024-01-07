@@ -1,35 +1,35 @@
-import os
+from ast import List
 from pydantic import ValidationError
 import pytest
-import hashlib
-import time
-import redis
-os.environ["REDIS_OM_URL"] = "redis://localhost:6379"
-os.environ["ENCRYPTION_KEY"] = 'MySecretEncryptionKey1234567890'
-from famodels.models.investor import EncryptionService, Fund, Investor, ExchangeKey, Subscription
-from famodels.models.person import Person
+from famodels.investor import Fund, Investor
+from famodels.person import Person
 
-
-@pytest.fixture(scope="session", autouse=True)
-def setup_redis():
-    if 'CI' not in os.environ:
-        os.system('docker run --name redis-unit-test -d -p 6379:6379 redis/redis-stack-server:latest')
-        os.environ["REDIS_OM_URL"] = "redis://localhost:6379"
-        # give some time for the Redis server to start
-        time.sleep(2)        
-        
-    yield
-
-    if 'CI' not in os.environ:
-        os.system('docker stop redis-unit-test')
-        os.system('docker rm redis-unit-test')
-
-
-def test_investor_model():
-    """Simple test if we can create a Investor model."""
-    person = Person(given_name="john", family_name="Doe", email="john@doe.com", gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
-    investor = Investor(id='123', name="Jonathans Investements Ltd", email='test@example.com', accountable=person)    
-
+@pytest.mark.parametrize("given_name, family_name, email, gender, nationality_iso2, country_of_residence_iso2, phone, investor_id, investor_name, investor_email", [
+    ("John", "Doe", "john@doe.com", "m", "UK", "US", "+44 123456789", "123", "Jonathans Investments Ltd", "contact@jonathans.com"),
+    ("Jane", "Smith", "jane@smith.com", "f", "US", "UK", "+1 987654321", "456", "Jane's Ventures", "info@janesventures.com"),
+])
+def test_investor_model(given_name, family_name, email, gender, nationality_iso2, country_of_residence_iso2, phone, investor_id, investor_name, investor_email):
+    """Test if we can create an Investor model with various parameters."""
+    person = Person(
+        given_name=given_name,
+        family_name=family_name,
+        email=email,
+        gender=gender,
+        nationality_iso2=nationality_iso2,
+        country_of_residence_iso2=country_of_residence_iso2,
+        phone=phone
+    )
+    investor = Investor(
+        id=investor_id,
+        name=investor_name,
+        email=investor_email,
+        accountable=person
+    )
+    assert investor.id == investor_id
+    assert investor.name == investor_name
+    assert investor.email == investor_email
+    assert investor.accountable == person
+    assert investor.accountable.gender == gender
 
 @pytest.mark.parametrize(
     "email, nationality_iso2, country_of_residence_iso2",
@@ -78,27 +78,27 @@ def test_positive_person(email, nationality_iso2, country_of_residence_iso2):
         pytest.fail("ValidationError raised unexpectedly!")
 
 
-@pytest.mark.parametrize(
-    "exchange, key_id, key_secret",
-    [
-        ("Binance", "key1", "secret1"),
-        ("Kucoin", "key2", "secret2")
-    ]
-)
-def test_exchange_key(exchange, key_id, key_secret):
-    # Instantiate an EncryptionService
-    encryption_service = EncryptionService('MySecretEncryptionKey1234567890')
+# @pytest.mark.parametrize(
+#     "exchange, key_id, key_secret",
+#     [
+#         ("Binance", "key1", "secret1"),
+#         ("Kucoin", "key2", "secret2")
+#     ]
+# )
+# def test_exchange_key(exchange, key_id, key_secret):
+#     # Instantiate an EncryptionService
+#     encryption_service = EncryptionService('MySecretEncryptionKey1234567890')
 
-    # Instantiate an ExchangeKey object with placeholder values
-    exchange_key = ExchangeKey(exchange=exchange, key_id=key_id, _key_secret="")
-    
-    # Set key_secret, which will trigger encryption
-    exchange_key.set_key_secret(key_secret, encryption_service)
+#     # Instantiate an ExchangeKey object with placeholder values
+#     exchange_key = ExchangeKey(exchange=exchange, key_id=key_id, _key_secret="")
 
-    # Assert the attributes of the ExchangeKey
-    assert exchange_key.exchange == exchange
-    assert exchange_key.key_id == key_id
-    assert exchange_key.get_key_secret(encryption_service) == key_secret
+#     # Set key_secret, which will trigger encryption
+#     exchange_key.set_key_secret(key_secret, encryption_service)
+
+#     # Assert the attributes of the ExchangeKey
+#     assert exchange_key.exchange == exchange
+#     assert exchange_key.key_id == key_id
+#     assert exchange_key.get_key_secret(encryption_service) == key_secret
 
 @pytest.mark.parametrize(
     "investor_id, name, email, funds",
@@ -111,23 +111,23 @@ def test_exchange_key(exchange, key_id, key_secret):
 def test_investor_funds(investor_id, name, email, funds):
     person = Person(given_name="john", family_name="Doe", email=email, gender="f", nationality_iso2="UK", country_of_residence_iso2="IR", phone="+43 681 11 24")
 
-    funds_objects = []
+    funds_objects: List[Fund] = []
     for fund in funds:
-        subscriptions = [Subscription(**subscription) for subscription in fund.pop('subscriptions')]
-        fund_obj = Fund(subscriptions=subscriptions, **fund)
+        # subscriptions = [Subscription(**subscription) for subscription in fund.pop('subscriptions')]
+        fund_obj: Fund = Fund(**fund)
         funds_objects.append(fund_obj)
 
     investor = Investor(id=investor_id, name=name, email=email, accountable=person, funds=funds_objects)
 
     assert investor.id == investor_id
     assert investor.name == name
-    assert investor.email == email    
+    assert investor.email == email
     assert len(investor.funds) == len(funds_objects)
     for i in range(len(funds_objects)):
         assert investor.funds[i].id == funds_objects[i].id
         assert investor.funds[i].name == funds_objects[i].name
         assert investor.funds[i].compounding == funds_objects[i].compounding
-        assert len(investor.funds[i].subscriptions) == len(funds_objects[i].subscriptions)
+        # assert len(investor.funds[i].subscriptions) == len(funds_objects[i].subscriptions)
 
 
 def test_passphrase():

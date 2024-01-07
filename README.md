@@ -6,8 +6,6 @@ Freya Alpha,
 The Kára System,
 Spark & Hale Robotic Industries
 
-## TODO
-- [ ] Create Default values for enum, array, set, map, etc.
 
 ## General
 Run and compiled for Python 3.9.13.

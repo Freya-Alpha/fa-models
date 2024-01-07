@@ -24,11 +24,9 @@ from setuptools import find_packages, setup
 
 setup(
     name='fa-models',
-    packages=find_packages(include=['famodels', 
-                                    'famodels.models', 
-                                    'famodels.models.market',
-                                    'famodels.models.exchange',
-                                    'famodels.models.db_independent'
+    packages=find_packages(include=['famodels',
+                                    'famodels.market',
+                                    'famodels.exchange'
                                     ], exclude=['tests*']),
     # packages=['famodels'],
     # package_dir={'famodels':'src'}

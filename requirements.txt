@@ -1,11 +1,8 @@
 wheel
 setuptools
 twine
-sqlmodel
 pytest
-redis[hiredis]
-redis-om
 cryptography
+pydantic
 pydantic[email]
-fakeredis[json]
 bcrypt
