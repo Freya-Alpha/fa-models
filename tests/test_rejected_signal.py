@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 from famodels.raw_signal import RawSignal
-from famodels.rejected_signal import RejectdSignal, ReasonForRejection
+from famodels.rejected_signal import RejectedSignal, ReasonForRejection
 
 def create_example_raw_signal():
     # Create and return a RawSignal instance for testing
@@ -25,7 +25,7 @@ def test_rejected_signal_creation():
     raw_signal = create_example_raw_signal()
     reason = ReasonForRejection.SCAM
 
-    rejected_signal = RejectdSignal.from_raw_signal(raw_signal, reason)
+    rejected_signal = RejectedSignal.from_raw_signal(raw_signal, reason)
 
     # Check if all RawSignal attributes are correctly copied
     assert rejected_signal.provider_id == raw_signal.provider_id
@@ -40,5 +40,5 @@ def test_rejected_signal_without_reason():
 
     # Expect an error when trying to create a RejectedSignal without a reason
     with pytest.raises(TypeError):
-        RejectdSignal.from_raw_signal(raw_signal)
+        RejectedSignal.from_raw_signal(raw_signal)
 

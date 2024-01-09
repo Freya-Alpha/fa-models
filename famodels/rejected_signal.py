@@ -13,7 +13,7 @@ class ReasonForRejection(str, Enum):
     INCLOMPLETE = "incomplete" # any kind of missing data
     WRONG_COMBINATION = "wrong_combination" # any kind of wrong data combos
 
-class RejectdSignal(RawSignal):
+class RejectedSignal(RawSignal):
     """
     Rejected Signals are processed Raw Signals, wich are rejected for some reason.
     This signal wraps the RawSignal, which is derived from the TradingSignal.
