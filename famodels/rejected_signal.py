@@ -9,9 +9,9 @@ class ReasonForRejection(str, Enum):
     BANNED_STRATEGY = "banned_strategy"
     BANNED_IP = "banned_ip"
     DOS_ATTACK = "dos_attack" # any flood attack: slowloris, ping-of-death, query attack, etc.
+    INVALID_DATA = "invalid_data"
     INVALID_PRICE = "invalid_price"
     INCLOMPLETE = "incomplete" # any kind of missing data
-    WRONG_COMBINATION = "wrong_combination" # any kind of wrong data combos
 
 class RejectedSignal(RawSignal):
     """
