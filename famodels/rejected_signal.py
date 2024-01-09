@@ -6,7 +6,7 @@ from famodels.raw_signal import RawSignal
 class ReasonForRejection(str, Enum):
     SCAM = "scam"
     BANNED_SUPPLIER = "banned_supplier"
-    BANNED_ALGO = "banned_algo"
+    BANNED_STRATEGY = "banned_strategy"
     BANNED_IP = "banned_ip"
     DOS_ATTACK = "dos_attack" # any flood attack: slowloris, ping-of-death, query attack, etc.
     INVALID_PRICE = "invalid_price"
