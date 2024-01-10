@@ -10,7 +10,7 @@ class RawSignal(TradingSignal):
     And adds new values to it, e.g., ID or registration time.
     """
     id: str = Field(default_factory=lambda: str(uuid4()), description="The ID of this raw signal created upon initiation.")
-    date_of_registration: Optional[datetime] = Field(default_factory=datetime.now, description="The datetime when the signal was entering our interface.")
+    date_of_registration: Optional[datetime] = Field(default_factory=datetime.now, description="The UTC datetime when the signal was entering our interface.")
 
     @classmethod
     def from_trading_signal(cls, trading_signal: TradingSignal):

@@ -23,15 +23,15 @@ def create_example_raw_signal():
 
 def test_rejected_signal_creation():
     raw_signal = create_example_raw_signal()
-    reason = ReasonForRejection.SCAM
+    reasons = {ReasonForRejection.SCAM}
 
-    rejected_signal = RejectedSignal.from_raw_signal(raw_signal, reason)
+    rejected_signal = RejectedSignal.from_raw_signal(raw_signal, reasons)
 
     # Check if all RawSignal attributes are correctly copied
     assert rejected_signal.provider_id == raw_signal.provider_id
     assert rejected_signal.strategy_id == raw_signal.strategy_id
     # Check if the rejection reason is correctly set
-    assert rejected_signal.reason_for_rejection == reason
+    assert rejected_signal.reasons_for_rejection == reasons
     # Check if the date_of_rejection is set and is a datetime object
     assert isinstance(rejected_signal.date_of_rejection, datetime)
 
@@ -41,4 +41,3 @@ def test_rejected_signal_without_reason():
     # Expect an error when trying to create a RejectedSignal without a reason
     with pytest.raises(TypeError):
         RejectedSignal.from_raw_signal(raw_signal)
-
