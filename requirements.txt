@@ -6,3 +6,4 @@ cryptography
 pydantic
 pydantic[email]
 bcrypt
+ipaddress
