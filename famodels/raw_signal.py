@@ -2,7 +2,7 @@ from pydantic import Field
 from typing import Optional
 from datetime import datetime
 from uuid import uuid4
-from famodels.trading_signal import TradingSignal
+from fasignalprovider.trading_signal import TradingSignal
 
 class RawSignal(TradingSignal):
     """

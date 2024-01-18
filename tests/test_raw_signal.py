@@ -1,13 +1,14 @@
 from datetime import datetime
 from uuid import UUID
 from famodels.raw_signal import RawSignal
-from famodels.trading_signal import TradingSignal
+from fasignalprovider.trading_signal import TradingSignal
 
 def test_raw_signal_creation():
     # Create a TradingSignal instance
     trading_signal = TradingSignal(
         provider_id="provider1",
         strategy_id="strategy123",
+        provider_signal_id="signal3746",
         provider_trade_id="trade456",
         is_hot_signal=True,
         market="BTC/USDT",
