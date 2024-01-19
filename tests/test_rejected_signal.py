@@ -9,6 +9,7 @@ def create_example_raw_signal():
     return RawSignal(
         provider_id="test_provider",
         strategy_id="test_strategy",
+        provider_signal_id="signal_id_2324",
         provider_trade_id="test_trade_id",
         is_hot_signal=True,
         market="Test Market",

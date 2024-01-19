@@ -1,3 +1,7 @@
+wheel
+setuptools
+twine
+pytest
 fa-signal-provider
 pydantic
 pydantic[email]

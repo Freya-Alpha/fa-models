@@ -33,6 +33,11 @@ Start the Environment:
 ```
  (or allow VS Code to start it). Use `deactivate`to stop it.
 
+Upgrade the PIP.
+```
+python -m pip install --upgrade pip
+```
+
 All the required libraries must be listed in requirements.txt and installed by  
 ```
 python -m pip install -r .\requirements.txt
@@ -70,7 +75,7 @@ Simply commit and push into MAIN. Make sure you have tested well.
 
 Github Actions (.github/workflows/testing_and_deployment.yml) will deploy the file to pypi.org.
 
------
+### Manual and old process
 
 Delete any old files in the /dist and build folder of your local environment.
 Update your pip: 
