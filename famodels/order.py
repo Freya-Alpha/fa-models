@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from famodels.direction import Direction
-from famodels.side import Side
 from enum import Enum
 
 class OrderType(str, Enum):
@@ -27,7 +26,6 @@ class Order(BaseModel):
     market: str = Field(...)
     exchange: str = Field(...)
     direction: Direction = Field(...)
-    side: Side = Field(...)
     price: float
     amount: float
     tp: float
