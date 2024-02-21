@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from famodels.direction import Direction
-from famodels.side import Side
 from famodels.order_type import OrderType
 from datetime import datetime
 
@@ -13,7 +12,6 @@ class VirtualOrder(BaseModel):
     order_type: OrderType = Field(default=OrderType.LIMIT)
     market: str = Field(...)
     direction: Direction = Field(...)
-    side: Side = Field(...)
     price: float = Field(...)
     position_size_of_investment: float = Field(...)
     amount: Optional[float] = Field(None)

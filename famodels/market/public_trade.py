@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from famodels.direction import Direction
-from famodels.side import Side
 
 class PublicTrade(BaseModel):
     market: str = Field(...)
@@ -9,7 +8,6 @@ class PublicTrade(BaseModel):
     price: float = Field(...)
     quantity: float = Field(...)
     direction: Direction = Field(...)
-    side: Side = Field(...)
     timestamp: datetime = Field(...)
 
     @field_validator('price', 'quantity')

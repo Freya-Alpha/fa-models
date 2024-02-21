@@ -26,7 +26,8 @@ setup(
     name='fa-models',
     packages=find_packages(include=['famodels',
                                     'famodels.market',
-                                    'famodels.exchange'
+                                    'famodels.exchange',
+                                    'famodels.fund'
                                     ], exclude=['tests*']),
     # packages=['famodels'],
     # package_dir={'famodels':'src'}

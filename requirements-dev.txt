@@ -5,3 +5,5 @@ pytest
 fa-signal-provider
 pydantic
 pydantic[email]
+ipaddress
+bcrypt
