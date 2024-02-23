@@ -1,5 +1,7 @@
 from datetime import datetime
 from uuid import UUID
+from build.lib.famodels.side import Side
+from direction import Direction
 from famodels.raw_signal import RawSignal
 from fasignalprovider.trading_signal import TradingSignal
 
@@ -13,8 +15,8 @@ def test_raw_signal_creation():
         is_hot_signal=True,
         market="BTC/USDT",
         exchange="Binance",
-        direction="long",
-        side="buy",
+        direction=Direction.LONG,
+        side=Side.BUY,
         price=50000.0,
         tp=51000.0,
         sl=49500.0,
