@@ -1,9 +1,10 @@
 from datetime import datetime
 from uuid import UUID
-from build.lib.famodels.side import Side
-from direction import Direction
 from famodels.raw_signal import RawSignal
 from fasignalprovider.trading_signal import TradingSignal
+from fasignalprovider.direction import Direction
+from fasignalprovider.side import Side
+
 
 def test_raw_signal_creation():
     # Create a TradingSignal instance
@@ -14,7 +15,7 @@ def test_raw_signal_creation():
         provider_trade_id="trade456",
         is_hot_signal=True,
         market="BTC/USDT",
-        exchange="Binance",
+        data_source="CoinGecko",
         direction=Direction.LONG,
         side=Side.BUY,
         price=50000.0,
@@ -32,7 +33,7 @@ def test_raw_signal_creation():
     assert raw_signal.provider_trade_id == trading_signal.provider_trade_id
     assert raw_signal.is_hot_signal == trading_signal.is_hot_signal
     assert raw_signal.market == trading_signal.market
-    assert raw_signal.exchange == trading_signal.exchange
+    assert raw_signal.data_source == trading_signal.data_source
     assert raw_signal.direction == trading_signal.direction
     assert raw_signal.side == trading_signal.side
     assert raw_signal.price == trading_signal.price
@@ -50,13 +51,14 @@ def test_raw_signal_default_values():
     # Create a RawSignal with default values
     raw_signal = RawSignal(
         provider_id="default_provider",
-        strategy_id="default_strategy",
-        provider_trade_id="default_trade",
+        strategy_id="default_strategy",        
+        provider_trade_id="default_trade_id",
+        provider_signal_id="default_signal_id",
         is_hot_signal=False,
         market="ETH/USD",
-        exchange="Coinbase",
-        direction="short",
-        side="sell",
+        data_source="Chainlink",
+        direction=Direction.LONG,
+        side=Side.BUY,
         price=3000.0,
         tp=2900.0,
         sl=3050.0,

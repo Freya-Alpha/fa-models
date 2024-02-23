@@ -1,9 +1,12 @@
-wheel
-setuptools
-twine
-pytest
-fa-signal-provider
 pydantic
 pydantic[email]
 ipaddress
 bcrypt
+#C:/Users/braya/apps/freyaalpha/fa-signal-provider
+fa-signal-provider
+
+#TEST AND DEPLOYMENT  LIBS
+wheel
+setuptools
+twine
+pytest

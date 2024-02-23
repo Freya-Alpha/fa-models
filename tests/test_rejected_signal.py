@@ -2,6 +2,8 @@ import pytest
 from datetime import datetime
 from famodels.raw_signal import RawSignal
 from famodels.rejected_signal import RejectedSignal, ReasonForRejection
+from fasignalprovider.direction import Direction
+from fasignalprovider.side import Side
 
 def create_example_raw_signal():
     # Create and return a RawSignal instance for testing
@@ -13,9 +15,9 @@ def create_example_raw_signal():
         provider_trade_id="test_trade_id",
         is_hot_signal=True,
         market="Test Market",
-        exchange="Test Exchange",
-        direction="long",
-        side="buy",
+        data_source="chainlink",
+        direction=Direction.LONG,
+        side=Side.BUY,
         price=100.0,
         tp=110.0,
         sl=90.0,

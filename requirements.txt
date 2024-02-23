@@ -1,5 +1,5 @@
-fa-signal-provider
 pydantic
 pydantic[email]
 ipaddress
 bcrypt
+fa-signal-provider
