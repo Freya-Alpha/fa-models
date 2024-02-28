@@ -5,14 +5,14 @@ import uuid
 from pydantic import BaseModel, ConfigDict, Field, field_validator, EmailStr
 
 class EmailSubscriberBaseModel(BaseModel):
-    model_config = ConfigDict(coerce_numbers_to_str=True)
+    model_config = ConfigDict(coerce_numbers_to_str=True, str_strip_whitespace=True)
 
-    ip_address: ipaddress.IPv4Address = Field(..., strip_withspace=True)
+    ip_address: ipaddress.IPv4Address = Field(...)
     timestamp: datetime = Field(default_factory=datetime.now)
 
     @field_validator('ip_address')
     def val_ip_address(cls, v: ipaddress.IPv4Address) -> ipaddress.IPv4Address:
-        return str.strip(v.compressed)    
+        return str.strip(v.compressed)
 
 class EmailSubscriberIn(EmailSubscriberBaseModel):
     email: EmailStr = Field(...)
