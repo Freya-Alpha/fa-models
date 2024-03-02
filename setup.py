@@ -36,7 +36,7 @@ setup(
     # description='The library describes the most common models used in trading systems.',
     # author='Brayan Svan',
     # license='MIT',
-    install_requires=['fasignalsupplier'],
+    install_requires=['fa-signal-provider'],
     # setup_requires=['pytest-runner'],
     # tests_require=['pytest==4.4.1'],
     # test_suite='tests',
