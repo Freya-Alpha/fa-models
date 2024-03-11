@@ -17,9 +17,11 @@ class EmailSubscriberBaseModel(BaseModel):
 class EmailSubscriberIn(EmailSubscriberBaseModel):
     email: EmailStr = Field(...)
 
-class EmailSubscriberInDb(EmailSubscriberBaseModel):
+class EmailSubscriberInForward(EmailSubscriberBaseModel):
     id: str = Field(default=str(uuid.uuid4()))
     email_encrypted: str = Field(...)
+
+class EmailSubscriberInDb(EmailSubscriberInForward):
     ip_address_city: Optional[str] = Field(None)
     ip_address_region: Optional[str] = Field(None)
     ip_address_country: Optional[str] = Field(None)
