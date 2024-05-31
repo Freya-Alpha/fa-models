@@ -21,7 +21,8 @@ def create_example_raw_signal():
         price=100.0,
         tp=110.0,
         sl=90.0,
-        position_size_in_percentage=100
+        position_size_in_percentage=100,
+        date_of_creation=int(datetime.utcnow().timestamp())
     )
 
 def test_rejected_signal_creation():

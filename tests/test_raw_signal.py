@@ -63,7 +63,8 @@ def test_raw_signal_default_values():
         price=3000.0,
         tp=2900.0,
         sl=3050.0,
-        position_size_in_percentage=100
+        position_size_in_percentage=100,
+        date_of_creation=int(datetime.utcnow().timestamp())
     )
 
     # Assert default values for id and timestamp_of_registration
