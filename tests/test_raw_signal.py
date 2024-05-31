@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, time
 from uuid import UUID
 from famodels.raw_signal import RawSignal
 from fasignalprovider.trading_signal import TradingSignal
@@ -22,7 +22,7 @@ def test_raw_signal_creation():
         tp=51000.0,
         sl=49500.0,
         position_size_in_percentage=50,
-        date_of_creation=datetime.now(timezone.utc)
+        date_of_creation=int(datetime.utcnow().timestamp())
     )
 
     # Wrap it into a RawSignal
