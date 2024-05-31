@@ -21,7 +21,8 @@ def test_raw_signal_creation():
         price=50000.0,
         tp=51000.0,
         sl=49500.0,
-        position_size_in_percentage=50
+        position_size_in_percentage=50,
+        date_of_creation=datetime.utcnow().isoformat() + "Z"
     )
 
     # Wrap it into a RawSignal
