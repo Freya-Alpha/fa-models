@@ -1,5 +1,6 @@
 import pytest
-from famodels.email_subscriber import EmailSubscriberIn, EmailSubscriberInDb
+from famodels.email_subscriber import EmailSubscriberIn, EmailSubscriberInDb, EmailSubscriptionAction
+
 
 @pytest.mark.parametrize("email, ip_address", [
     ("test@test.com", "127.0.0.1"),
@@ -8,25 +9,29 @@ from famodels.email_subscriber import EmailSubscriberIn, EmailSubscriberInDb
     ("alias001@ubuntu.com", "100.128.0.0")
 ])
 def test_email_subscriber_model(email: str, ip_address: str):
-    """Test if we can create an subscriber model with various parameters."""
+    """Test if we can create a subscriber model with various parameters."""
     subscriber = EmailSubscriberIn(
         email=email,
-        ip_address=ip_address)
+        ip_address=ip_address,
+        subscription_action=EmailSubscriptionAction.SUBSCRIBE)
 
     assert subscriber.email == email
     assert subscriber.ip_address == ip_address
 
+
 @pytest.mark.parametrize("email, ip_address", [
     ("    name@domain.com    ", "100.128.0.0"),
 ])
-def test_email_subscriber_model_with_whitspace_email(email: str, ip_address: str):
-    """Test if we can create an subscriber model with various parameters."""
+def test_email_subscriber_model_with_whitespace_email(email: str, ip_address: str):
+    """Test if we can create a subscriber model with various parameters."""
     subscriber = EmailSubscriberIn(
         email=email,
-        ip_address=ip_address)
+        ip_address=ip_address,
+        subscription_action=EmailSubscriptionAction.SUBSCRIBE)
 
     assert subscriber.email == email.strip()
     assert subscriber.ip_address == ip_address
+
 
 @pytest.mark.parametrize("email, ip_address", [
     (None, "127.0.0.1"),
@@ -40,22 +45,26 @@ def test_email_subscriber_model_for_validation_errors(email: str, ip_address: st
     with pytest.raises(Exception):
         EmailSubscriberIn(
             email=email,
-            ip_address=ip_address)
+            ip_address=ip_address,
+            subscription_action=EmailSubscriptionAction.SUBSCRIBE)
+
 
 @pytest.mark.parametrize("email, ip_address, ip_address_lat, ip_address_lon", [
     ("info@swiss.ch", "100.128.0.0", "30.2", "70.93838"),
     ("info@freya-alpha.com", "166.128.0.0", "89.2", "179.93838")])
 def test_email_subscriber_db_model(email: str, ip_address: str, ip_address_lat: str, ip_address_lon: str):
-    subscriberInDb = EmailSubscriberInDb(
+    subscriber_in_db = EmailSubscriberInDb(
         email_encrypted=email,
+        subscription_action=EmailSubscriptionAction.SUBSCRIBE,
         ip_address=ip_address,
         ip_address_location_lat=ip_address_lat,
         ip_address_location_lon=ip_address_lon)
 
-    assert subscriberInDb.email_encrypted == email
-    assert subscriberInDb.ip_address == ip_address
-    assert subscriberInDb.ip_address_location_lat == ip_address_lat
-    assert subscriberInDb.ip_address_location_lon == ip_address_lon
+    assert subscriber_in_db.email_encrypted == email
+    assert subscriber_in_db.ip_address == ip_address
+    assert subscriber_in_db.ip_address_location_lat == ip_address_lat
+    assert subscriber_in_db.ip_address_location_lon == ip_address_lon
+
 
 @pytest.mark.parametrize("ip_address, ip_address_lat, ip_address_lon", [
     (None, "30.2", "70.93838"),
@@ -65,5 +74,6 @@ def test_email_subscriber_db_model_for_validation_errors(ip_address: str, ip_add
     with pytest.raises(Exception):
         EmailSubscriberInDb(
             ip_address=ip_address,
+            subscription_action=EmailSubscriptionAction.SUBSCRIBE,
             ip_address_location_lat=ip_address_lat,
             ip_address_location_lon=ip_address_lon)
