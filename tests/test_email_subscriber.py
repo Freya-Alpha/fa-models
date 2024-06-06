@@ -77,3 +77,27 @@ def test_email_subscriber_db_model_for_validation_errors(ip_address: str, ip_add
             subscription_action=EmailSubscriptionAction.SUBSCRIBE,
             ip_address_location_lat=ip_address_lat,
             ip_address_location_lon=ip_address_lon)
+
+
+@pytest.mark.parametrize("email, ip_address", [
+    ("info@swiss.ch", "100.128.0.0"),
+    ("info@freya-alpha.com", "166.128.0.0")])
+def test_email_subscriber_db_model_with_null_values(email: str, ip_address: str):
+    subscriber_in_db = EmailSubscriberInDb(
+        email_encrypted=email,
+        subscription_action=EmailSubscriptionAction.SUBSCRIBE,
+        ip_address=ip_address)
+
+    assert subscriber_in_db.email_encrypted == email
+    assert subscriber_in_db.ip_address == ip_address
+    assert subscriber_in_db.ip_address_location_lat is None
+    assert subscriber_in_db.ip_address_location_lon is None
+
+
+def test_email_subscriber_db_model_default_id():
+    subscriber_in_db = EmailSubscriberInDb(
+        email_encrypted="test@test.com",
+        subscription_action=EmailSubscriptionAction.SUBSCRIBE,
+        ip_address="198.252.0.0")
+
+    assert subscriber_in_db.id is not None

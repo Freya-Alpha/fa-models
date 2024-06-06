@@ -38,5 +38,7 @@ class EmailSubscriberInDb(EmailSubscriberInForward):
     ip_address_city: Optional[str] = Field(None)
     ip_address_region: Optional[str] = Field(None)
     ip_address_country: Optional[str] = Field(None)
-    ip_address_location_lat: str = Field(pattern=r"^-?([0-8]?[0-9]|90)(\.[0-9]{1,20})$")
-    ip_address_location_lon: str = Field(pattern=r"^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,20})$")
+    ip_address_location_lat: Optional[str] = Field(default=None,
+                                                   pattern=r"^-?([0-8]?[0-9]|90)(\.[0-9]{1,20})$")
+    ip_address_location_lon: Optional[str] = Field(default=None,
+                                                   pattern=r"^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,20})$")
