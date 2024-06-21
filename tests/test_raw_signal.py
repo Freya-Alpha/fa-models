@@ -1,4 +1,4 @@
-from datetime import datetime, time
+import time
 from uuid import UUID
 from famodels.raw_signal import RawSignal
 from fasignalprovider.trading_signal import TradingSignal
@@ -22,7 +22,7 @@ def test_raw_signal_creation():
         tp=51000.0,
         sl=49500.0,
         position_size_in_percentage=50,
-        date_of_creation=int(datetime.utcnow().timestamp())
+        date_of_creation=time.time_ns()
     )
 
     # Wrap it into a RawSignal
@@ -46,7 +46,7 @@ def test_raw_signal_creation():
     assert UUID(raw_signal.id, version=4)
 
     # Assert that the timestamp_of_registration is set and is a datetime object
-    assert isinstance(raw_signal.date_of_registration, datetime)
+    assert isinstance(raw_signal.date_of_registration, int)
 
 def test_raw_signal_default_values():
     # Create a RawSignal with default values
@@ -64,11 +64,11 @@ def test_raw_signal_default_values():
         tp=2900.0,
         sl=3050.0,
         position_size_in_percentage=100,
-        date_of_creation=int(datetime.utcnow().timestamp())
+        date_of_creation=time.time_ns()
     )
 
     # Assert default values for id and timestamp_of_registration
     assert UUID(raw_signal.id, version=4)
-    assert isinstance(raw_signal.date_of_registration, datetime)
+    assert isinstance(raw_signal.date_of_registration, int)
 
 # Add more test cases as needed to cover different scenarios and edge cases.
