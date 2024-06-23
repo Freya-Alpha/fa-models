@@ -22,7 +22,7 @@ def test_raw_signal_creation():
         tp=51000.0,
         sl=49500.0,
         position_size_in_percentage=50,
-        date_of_creation=time.time_ns()
+        date_of_creation=int(time.time() * 1000)
     )
 
     # Wrap it into a RawSignal
@@ -64,7 +64,7 @@ def test_raw_signal_default_values():
         tp=2900.0,
         sl=3050.0,
         position_size_in_percentage=100,
-        date_of_creation=time.time_ns()
+        date_of_creation=int(time.time() * 1000)
     )
 
     # Assert default values for id and timestamp_of_registration
